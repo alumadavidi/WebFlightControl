@@ -251,7 +251,7 @@ namespace FlightControlWeb.Models
                 (string)reader["DateTime"]);
 
             List<Segment> seg = GetSegments(id);
-            FlightPlan f = new FlightPlan(id, pass, company, initLoc, seg));
+            FlightPlan f = new FlightPlan(id, pass, company, initLoc, seg);
             // Call Close when done reading.
             reader.Close();
             return f;
