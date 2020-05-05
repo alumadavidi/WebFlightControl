@@ -40,8 +40,10 @@ namespace FlightControlWeb
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            app.UseStaticFiles();
 
+            app.UseAuthorization();
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

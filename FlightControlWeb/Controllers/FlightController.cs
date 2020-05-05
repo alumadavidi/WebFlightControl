@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace FlightControlWeb.Controllers
 {
@@ -12,37 +14,25 @@ namespace FlightControlWeb.Controllers
     [ApiController]
     public class FlightController : ControllerBase
     {
-        private FlightManager flight = new FlightManager();
-        // GET: api/Flight
-        [HttpGet]
-        public IEnumerable<string> Get()
-        {
-            return new string[] { "value1", "value2" };
-        }
+        private FlightManager flightManager = new FlightManager();
+        private SqliteDB db = SqliteDB.Instance;
+        Flight f = new Flight("1234567", 33.240, 31.12, 216, "SwissAir1", "2020-12-26T23:56:21Z1"
+            , false);
+        Flight f1 = new Flight("1234568", 33.241, 31.12, 2165, "SwissAir2", "2020-12-26T23:56:21Z2"
+            , false);
+        Flight f2 = new Flight("1234569", 33.242, 31.12, 216, "SwissAir3", "2020-12-26T23:56:21Z3"
+            , false);
+        Flight f3 = new Flight("1234560", 33.243, 31.12, 216, "SwissAir4", "2020-12-26T23:56:21Z1"
+            , false);
+       
 
-        // GET: api/Flight/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Flight
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Flight/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+      
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public void Delete(string id)
         {
+            flightManager.DeleteFlight(id);
         }
     }
 }
