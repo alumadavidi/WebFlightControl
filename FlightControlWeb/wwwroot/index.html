@@ -1,10 +1,55 @@
 ﻿<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <title>hhh</title>
+    <title>Bootstrap 4 Example</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <style>
+        #map {
+            height: 500px;
+            width: 110%;
+        }
+    </style>
 </head>
 <body>
-    name:
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row bg-primary" id="map">
+                    map
+                </div>
+                <div class="row bg-warning">
+                    flightdetails
+                </div>
+            </div>
+            <div class="col-md-4 bg-success">
+                right part
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function initMap() {
+            // Map options
+            var options = {
+                zoom: 8,
+                center: { lat: 42.3601, lng: -71.0589 }
+            }
+
+            // New map
+            var map = new google.maps.Map(document.getElementById('map'), options);
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA372PcuJQKYrKADjhHTLLDVcfsoCzF-4M&callback=initMap">
+    </script>
+
+
 </body>
 </html>
