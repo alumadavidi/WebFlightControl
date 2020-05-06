@@ -26,10 +26,20 @@ namespace FlightControlWeb.Controllers
             , false);
        
 
-        [HttpGet]
-        public Flight Get()
+        //[HttpGet]
+        //public Flight Get()
+        //{
+        //    return f;
+        //}
+
+        //GET /api/Flights? relative_to =< DATE_TIME >
+       
+        [HttpGet(Name = "GetAllFlight")]
+        [Consumes("application/json")]
+
+        public string GetAllFlight([FromQuery] string relative_to)
         {
-            return f;
+            return "ok";
         }
         [HttpPost]
         [Consumes("application/json")]

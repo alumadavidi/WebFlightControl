@@ -137,17 +137,17 @@ namespace FlightControlWeb
         }
 
 
-        public void AddFlightPlan(FlightPlan f)
+        public void AddFlightPlan(FlightPlan f, string id)
         {
 
             using var cmd = new SQLiteCommand(connection);
-            string a = " VALUES(" + "\'" + f.FlightPlanId + "\',\'" + f.CompanyName + "\'," +
+            string a = " VALUES(" + "\'" + id + "\',\'" + f.CompanyName + "\'," +
                 f.Passengers+ ",\'" + f.InitialLocationFlight.DataTime + "\',"+
                 f.InitialLocationFlight.Longitude+","+ f.InitialLocationFlight.Latitude+")";
             cmd.CommandText = "INSERT INTO FlightPlanTable(id, " +
                 "companyName, passengers, dateTime, longitude, latitude )" + a;
             cmd.ExecuteNonQuery();
-            AddSegmentOfFlight(f.Segments, f.FlightPlanId);
+            AddSegmentOfFlight(f.Segments, id);
             //string stm = "SELECT * FROM FlightPlanTable LIMIT 5";
 
             //using var cmd1 = new SQLiteCommand(stm, connection);
@@ -204,9 +204,9 @@ namespace FlightControlWeb
         }
 
 
-        public List<FlightPlan> GetFlightPlans()
+        public List<FlightPlanId> GetFlightPlans()
         {
-            List<FlightPlan> flights = new List<FlightPlan>();
+            List<FlightPlanId> flights = new List<FlightPlanId>();
             string stm = "SELECT * FROM FlightPlanTable";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
@@ -218,8 +218,8 @@ namespace FlightControlWeb
                 List<Segment> seg = GetSegmentById(rdr.GetString(0));
                 InitialLocation initLoc = new InitialLocation(
                     rdr.GetDouble(4), rdr.GetDouble(5), rdr.GetString(3));
-                flights.Add(new FlightPlan(rdr.GetString(0),
-                    rdr.GetInt32(2), rdr.GetString(1), initLoc, seg));
+                flights.Add(new FlightPlanId(rdr.GetString(0), new FlightPlan(
+                    rdr.GetInt32(2), rdr.GetString(1), initLoc, seg)));
             }
             return flights;
         }
@@ -235,8 +235,8 @@ namespace FlightControlWeb
 
             InitialLocation initLoc = new InitialLocation(
                 rdr.GetDouble(4), rdr.GetDouble(5), rdr.GetString(3));
-            FlightPlan f = new FlightPlan(rdr.GetString(0),
-                rdr.GetInt32(2), rdr.GetString(1), initLoc, seg);
+            FlightPlan f = new FlightPlan(rdr.GetInt32(2), 
+                rdr.GetString(1), initLoc, seg);
 
             return f;
         }

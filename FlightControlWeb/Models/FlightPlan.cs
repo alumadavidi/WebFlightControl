@@ -12,26 +12,26 @@ namespace FlightControlWeb.Models
         private string company_name;
         private InitialLocation initial_location;
         private List<Segment> segments;
-        public FlightPlan(string id, int pass, string company,
+        public FlightPlan(int pass, string company,
             InitialLocation initialLoc, List<Segment> seg)
         {
-            flightPlanId = id;
+            //flightPlanId = id;
             passengers = pass;
             company_name = company;
             initial_location = initialLoc;
             segments = seg;
         }
-        public string FlightPlanId
-        {
-            set
-            {
-                flightPlanId = value;
-            }
-            get
-            {
-                return flightPlanId;
-            }
-        }
+        //public string FlightPlanId
+        //{
+        //    set
+        //    {
+        //        flightPlanId = value;
+        //    }
+        //    get
+        //    {
+        //        return flightPlanId;
+        //    }
+        //}
         public int Passengers
         {
             set

@@ -12,7 +12,7 @@ namespace FlightControlWeb.Models
        
         public FlightPlan AddNewFlightPlan(FlightPlan flightPlan)
         {
-            db.AddFlightPlan(flightPlan);
+            db.AddFlightPlan(flightPlan, createId());
             return flightPlan;
         }
         public FlightPlan GetFlightPlanById(string id)
@@ -20,10 +20,23 @@ namespace FlightControlWeb.Models
             return db.GetFlightPlanById(id);
         }
 
-        public string createIdPlan()
+        private string createId()
         {
-            //TODO: implement
-            return null;
+            string id = "";
+            string randomChar;
+            Random rnd = new Random();
+            for (int i = 0; i < 8; i++)
+            {
+                if (i < 2)
+                {
+                    randomChar = ""+(char)rnd.Next('A', 'Z');
+                } else
+                {
+                    randomChar = rnd.Next(0, 9).ToString();
+                }
+                id += randomChar;
+            }
+            return id;
         }
     }
 }
