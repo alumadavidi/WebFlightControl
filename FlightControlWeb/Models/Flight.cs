@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,23 +8,35 @@ namespace FlightControlWeb.Models
 {
     public class Flight
     {
-        private string flightId;
+        private string flight_id;
         private double longitude;
         private double latitude;
         private int passengers;
-        private string companyName;
-        private string dateTime;
-        private bool isExternal;
+        private string company_name;
+        private string date_time;
+        private bool is_external;
+        [JsonConstructor]
+        public Flight(string flight_id, double longitude, double latitude, int passengers,
+            string company_name, string date_time, bool is_external)
+        {
+            this.flight_id = flight_id;
+            this.longitude = longitude;
+            this.latitude = latitude;
+            this.passengers = passengers;
+            this.company_name = company_name;
+            this.date_time = date_time;
+            this.is_external = is_external;
+        }
 
-        public string FlightId
+        public string Flight_Id
         {
             get
             {
-                return flightId;
+                return flight_id;
             }
             set
             {
-                flightId = value;
+                flight_id = value;
             }
         }
         public double Longitude
@@ -59,37 +72,37 @@ namespace FlightControlWeb.Models
                 passengers = value;
             }
         }
-        public string CompanyName
+        public string Company_name
         {
             get
             {
-                return companyName;
+                return company_name;
             }
             set
             {
-                companyName = value;
+                company_name = value;
             }
         }
-        public string DateTime
+        public string Date_time
         {
             get
             {
-                return dateTime;
+                return date_time;
             }
             set
             {
-                dateTime = value;
+                date_time = value;
             }
         }
-        public bool IsExternal
+        public bool Is_external
         {
             get
             {
-                return isExternal;
+                return is_external;
             }
             set
             {
-                isExternal = value;
+                is_external = value;
             }
         }
     }

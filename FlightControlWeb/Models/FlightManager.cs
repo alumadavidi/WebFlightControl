@@ -7,7 +7,7 @@ namespace FlightControlWeb.Models
 {
     public class FlightManager
     {
-        private DB db = DB.Instance;
+        private SqliteDB db = SqliteDB.Instance;
 
         public List<Flight> GetFlightsFromServer()
         {

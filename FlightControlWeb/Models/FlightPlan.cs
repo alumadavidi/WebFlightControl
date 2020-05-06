@@ -9,16 +9,16 @@ namespace FlightControlWeb.Models
     {
         private string flightPlanId;
         private int passengers;
-        private string companyName;
-        private InitialLocation initialLocation;
+        private string company_name;
+        private InitialLocation initial_location;
         private List<Segment> segments;
         public FlightPlan(string id, int pass, string company,
             InitialLocation initialLoc, List<Segment> seg)
         {
             flightPlanId = id;
             passengers = pass;
-            companyName = company;
-            initialLocation = initialLoc;
+            company_name = company;
+            initial_location = initialLoc;
             segments = seg;
         }
         public string FlightPlanId
@@ -47,22 +47,22 @@ namespace FlightControlWeb.Models
         {
             set
             {
-                companyName = value;
+                company_name = value;
             }
             get
             {
-                return companyName;
+                return company_name;
             }
         }
         public InitialLocation InitialLocationFlight
         {
             set
             {
-                initialLocation = value;
+                initial_location = value;
             }
             get
             {
-                return initialLocation;
+                return initial_location;
             }
         }
         public List<Segment> Segments

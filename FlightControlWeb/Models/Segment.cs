@@ -9,12 +9,12 @@ namespace FlightControlWeb.Models
     {
         private double longitude;
         private double latitude;
-        private int timespanSeconds;
+        private int timespan_seconds;
         public Segment(double longi, double lat, int tSpan)
         {
             longitude = longi;
             latitude = lat;
-            timespanSeconds = tSpan;
+            timespan_seconds = tSpan;
         }
         public double Longitude
         {
@@ -42,11 +42,11 @@ namespace FlightControlWeb.Models
         {
             set
             {
-                timespanSeconds = value;
+                timespan_seconds = value;
             }
             get
             {
-                return timespanSeconds;
+                return timespan_seconds;
             }
         }
 

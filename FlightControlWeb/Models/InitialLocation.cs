@@ -2,19 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using System.Data.SQLite;
 namespace FlightControlWeb.Models
 {
     public class InitialLocation
     {
         private double longitude;
         private double latitude;
-        private string dataTime;
+        private string date_time;
         public InitialLocation(double longi, double lat, string data)
         {
             longitude = longi;
             latitude = lat;
-            dataTime = data;
+            date_time = data;
         }
         public double Longitude
         {
@@ -42,11 +42,11 @@ namespace FlightControlWeb.Models
         {
             set
             {
-                dataTime = value;
+                date_time = value;
             }
             get
             {
-                return dataTime;
+                return date_time;
             }
         }
 

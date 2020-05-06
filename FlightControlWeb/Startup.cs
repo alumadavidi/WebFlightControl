@@ -43,7 +43,7 @@ namespace FlightControlWeb
             app.UseStaticFiles();
 
             app.UseAuthorization();
-
+           
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

@@ -7,7 +7,8 @@ namespace FlightControlWeb.Models
 {
     public class FlightPlanManager
     {
-        private DB db = DB.Instance;
+        private SqliteDB db = SqliteDB.Instance;
+        
        
         public FlightPlan AddNewFlightPlan(FlightPlan flightPlan)
         {
