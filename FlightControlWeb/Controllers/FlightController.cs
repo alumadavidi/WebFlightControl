@@ -26,8 +26,18 @@ namespace FlightControlWeb.Controllers
             , false);
        
 
-      
-
+        [HttpGet]
+        public Flight Get()
+        {
+            return f;
+        }
+        [HttpPost]
+        [Consumes("application/json")]
+        public string Post(Flight a)
+        {
+            Console.WriteLine("efrat");
+            return "efrat";
+        }
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(string id)

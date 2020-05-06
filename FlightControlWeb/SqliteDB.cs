@@ -36,25 +36,25 @@ namespace FlightControlWeb
             BuildFlightPlanTable();
             BuildSegmentTable();
             BuildServerTable();
-            AddServer(new ServerFlight("12345", "www.ghh"));
-            List<Segment> s2 = new List<Segment>()
-             {
-                new Segment(5, 6,650),
-                new Segment(8, 9,650)
-             };
-            FlightPlanManager flightPlanManager = new FlightPlanManager();
-            FlightPlan f = new FlightPlan("123450", 216, "swir1",
-                new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z5"),
-                s2);
-            FlightPlan f1 = new FlightPlan("123451", 216, "swir1",
-               new InitialLocation(33.244, 31.122, "2020-12-26T23:56:21Z8"),
-               s2);
-            AddFlightPlan(f);
-            AddFlightPlan(f1);
-            GetServers();
-            GetFlightPlans();
-            GetFlightPlanById("123451");
-            RemoveFlightPlan("123450");
+            //AddServer(new ServerFlight("12345", "www.ghh"));
+            //List<Segment> s2 = new List<Segment>()
+            // {
+            //    new Segment(5, 6,650),
+            //    new Segment(8, 9,650)
+            // };
+            //FlightPlanManager flightPlanManager = new FlightPlanManager();
+            //FlightPlan f = new FlightPlan("123450", 216, "swir1",
+            //    new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z5"),
+            //    s2);
+            //FlightPlan f1 = new FlightPlan("123451", 216, "swir1",
+            //   new InitialLocation(33.244, 31.122, "2020-12-26T23:56:21Z8"),
+            //   s2);
+            //AddFlightPlan(f);
+            //AddFlightPlan(f1);
+            //GetServers();
+            //GetFlightPlans();
+            //GetFlightPlanById("123451");
+            //RemoveFlightPlan("123450");
 
 
         //using var cmd = new SQLiteCommand(connection);
