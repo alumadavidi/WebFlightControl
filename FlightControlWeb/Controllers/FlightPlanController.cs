@@ -62,6 +62,11 @@ namespace FlightControlWeb.Controllers
             flightPlanManager.AddNewFlightPlan(f);
             return f;
         }
+        [HttpGet(Name ="Get")]
+        public FlightPlan Get()
+        {
+            return f;
+        }
 
     }
 }
