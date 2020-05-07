@@ -35,16 +35,16 @@ namespace FlightControlWeb.Controllers
              new Segment(8, 9,650)
         };
         private FlightPlanManager flightPlanManager = new FlightPlanManager();
-        private static FlightPlan f = new FlightPlan("123450", 216, "swir1",
+        private static FlightPlan f = new FlightPlan(216, "swir1",
             new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z5"),
             s);
-        private static FlightPlan f1 = new FlightPlan("123451", 216, "swir",
+        private static FlightPlan f1 = new FlightPlan( 216, "swir",
             new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z6"),
             s0);
-        private static FlightPlan f2 = new FlightPlan("123452", 216, "swir1",
+        private static FlightPlan f2 = new FlightPlan( 216, "swir1",
             new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z7"),
             s1);
-        private static FlightPlan f3 = new FlightPlan("123453", 216, "swir",
+        private static FlightPlan f3 = new FlightPlan( 216, "swir",
             new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z8"),
             s2);
 

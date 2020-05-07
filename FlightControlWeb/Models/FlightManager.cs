@@ -10,7 +10,7 @@ namespace FlightControlWeb.Models
     {
         private SqliteDB db = SqliteDB.Instance;
 
-        public List<Flight> GetFlightsFromServer()
+        public List<Flight> GetFlightsFromServer(string relative_to)
         {
             DateTime serverTime = DateTime.UtcNow;
             List<Flight> currentFlight = new List<Flight>();
@@ -18,28 +18,31 @@ namespace FlightControlWeb.Models
 
             foreach(FlightPlanId fid in flightPlan){
                 FlightPlan f = fid.FlightP;
-                DateTime clientTime = 
-                    createDateTimeToClient(f.InitialLocationFlight.DataTime);
+                DateTime requestTime = 
+                    createDateTimeToClient(relative_to);
                 List<Segment> segments = f.Segments;
-                List<DateTime> dateTimes = createAllDataTimeClient(segments, clientTime);
-                if (flightIsNow(clientTime, serverTime, dateTimes[dateTimes.Count -1]))
+                List<DateTime> dateTimes = createAllDataTimeClient(segments,
+                    createDateTimeToClient(f.InitialLocationFlight.DataTime));
+                //DateTime request, DateTime start, DateTime end
+                if (flightIsNow(requestTime, dateTimes[0], dateTimes[dateTimes.Count -1]))
                 {
-                    int numSegment = findSpecificSegment(dateTimes, clientTime, serverTime);
-                    //num seconds passed from the beginning of the section 
-                    TimeSpan timeSpan = dateTimes[dateTimes.Count - 1] - serverTime;
-                    double seconds = timeSpan.TotalSeconds;
-                    //relative time from the beginning of the section
-                    seconds = seconds / segments[numSegment].TimespanSeconds;
+                    int numSegment = findSpecificSegment(dateTimes, requestTime);
+
                     double longStart, longEnd, latStart, latEnd;
+                    DateTime startSegment = dateTimes[numSegment];
+                    DateTime endSegment = dateTimes[numSegment + 1];
+                    //num seconds passed from the beginning of the segment 
+                    double secondsPast = (requestTime - startSegment).TotalSeconds;
+                    //total seconds that left in segment
+                    double secondLeft = (endSegment - requestTime).TotalSeconds;
                     if (numSegment == 0)
                     {
+                        
                         longStart = f.InitialLocationFlight.Longitude;
                         longEnd = segments[numSegment].Longitude;
 
                         latStart = f.InitialLocationFlight.Latitude;
                         latEnd = segments[numSegment].Latitude;
-
-                        
                     }
                     else 
                     {
@@ -50,14 +53,13 @@ namespace FlightControlWeb.Models
                         latEnd = segments[numSegment].Latitude;
 
                     }
-                    //Distance Distances
-                    longEnd -= longStart;
-                    latEnd -= latStart;
-                    //current place
-                    longStart += (longEnd * seconds);
-                    latStart += (latEnd * seconds);
+                    double newX = (longStart * secondLeft + longEnd * secondsPast) /
+                      (secondsPast + secondLeft)  ;
+                    double newY = (latStart * secondLeft + latEnd * secondsPast) /
+                      (secondsPast + secondLeft);
+                  
                     //add the new Flight to list
-                    currentFlight.Add(new Flight(fid.ID, longStart, latStart,
+                    currentFlight.Add(new Flight(fid.ID, newX, newY,
                         f.Passengers, f.CompanyName, convertString(serverTime), false));
                 }
             }
@@ -75,34 +77,36 @@ namespace FlightControlWeb.Models
         private List<DateTime> createAllDataTimeClient(List<Segment> segments, DateTime start)
         {
             List<DateTime> dateTime = new List<DateTime>();
+            dateTime.Add(start);
+            DateTime t = start;
             for (int i = 0; i < segments.Count; i++)
             {
-                dateTime.Add(start);
-                start.AddSeconds(segments[i].TimespanSeconds);
+               
+                t = t.AddSeconds(segments[i].TimespanSeconds);
+                dateTime.Add(t);
             }
-            dateTime.Add(start);
+           
             return dateTime;
         }
-        private int findSpecificSegment(List<DateTime> dateTimes, DateTime client,
-            DateTime server)
+        private int findSpecificSegment(List<DateTime> dateTimes, DateTime client)
         {
             int i;
             for(i = 1; i < dateTimes.Count; i++)
             {
-                if(dateTimes[i-1] < server && server < dateTimes[i])
+                if(dateTimes[i-1] <= client && client <= dateTimes[i])
                 {
                     break;
                 }
             }
             return i-1;
         }
-        private bool flightIsNow(DateTime client, DateTime server, DateTime end)
+        private bool flightIsNow(DateTime request, DateTime start, DateTime end)
         {
-            bool now = true;
+            bool now = false;
             //doenst start or finish
-            if((client > server) || (end < server))
+            if((start <= request) && (request <= end))
             {
-                now = false;
+                now = true;
             }
             return now;
         }
@@ -115,22 +119,26 @@ namespace FlightControlWeb.Models
             string[] time = dataTime[1].Split(":");
             DateTime clientTime = new DateTime(Convert.ToInt32(data[0]),
                 Convert.ToInt32(data[1]), Convert.ToInt32(data[2]),
-                Convert.ToInt32(time[0]), Convert.ToInt32(time[1]), Convert.ToInt32(time[2]));
+                Convert.ToInt32(time[0]), Convert.ToInt32(time[1]), 
+                Convert.ToInt32(time[2].Substring(0,2)));
             //convert to +2 time zone
-            clientTime.AddHours(2);
+            clientTime = clientTime.AddHours(Convert.ToInt32(time[2].Substring(2, 1)));
             return clientTime;
 
         }
-        private List<Flight> GetExternalFlights()
+        private List<Flight> GetExternalFlights(string relative_to)
         {
             //TODO: implement
             return null;
         }
 
-        public List<Flight> GetAllFlights()
+        public List<Flight> GetAllFlights(string relative_to)
         {
-            //TODO: implement
-            return null;
+            List<Flight> localServer = GetFlightsFromServer(relative_to);
+            List<Flight> externalServer = GetExternalFlights(relative_to);
+            //combine the list
+            localServer.AddRange(externalServer);
+            return localServer;
         }
 
         public void DeleteFlight(string id)

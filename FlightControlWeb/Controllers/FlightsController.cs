@@ -12,8 +12,10 @@ namespace FlightControlWeb.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class FlightController : ControllerBase
+    public class FlightsController : ControllerBase
     {
+        //private SqliteDB db = SqliteDB.Instance;
+        private FlightPlanManager flightPlanManager = new FlightPlanManager();
         private FlightManager flightManager = new FlightManager();
         private SqliteDB db = SqliteDB.Instance;
         Flight f = new Flight("1234567", 33.240, 31.12, 216, "SwissAir1", "2020-12-26T23:56:21Z1"
@@ -24,30 +26,38 @@ namespace FlightControlWeb.Controllers
             , false);
         Flight f3 = new Flight("1234560", 33.243, 31.12, 216, "SwissAir4", "2020-12-26T23:56:21Z1"
             , false);
-       
+
+
+
 
         //[HttpGet]
-        //public Flight Get()
+        //public void Get()
         //{
-        //    return f;
+        //    flightPlanManager.Test();
         //}
 
         //GET /api/Flights? relative_to =< DATE_TIME >
-       
+
         [HttpGet(Name = "GetAllFlight")]
         [Consumes("application/json")]
 
-        public string GetAllFlight([FromQuery] string relative_to)
+        public List<Flight> GetAllFlight([FromQuery(Name = "relative_to")] string relative_to)
         {
-            return "ok";
+            List<Flight> flights = new List<Flight>();
+            string query = Request.QueryString.Value;
+            if (query.Contains("sync_all"))
+            {
+                flights = flightManager.GetAllFlights(relative_to);
+            }
+            else
+            {
+                flights = flightManager.GetFlightsFromServer(relative_to);
+            }
+
+            return flights;
         }
-        [HttpPost]
-        [Consumes("application/json")]
-        public string Post(Flight a)
-        {
-            Console.WriteLine("efrat");
-            return "efrat";
-        }
+
+
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
         public void Delete(string id)
