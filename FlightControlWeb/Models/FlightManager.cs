@@ -71,7 +71,7 @@ namespace FlightControlWeb.Models
         {
             return "" + serverTime.Year + "-" + serverTime.Month + "-" + serverTime.Day
                 + "T" + serverTime.Hour + ":" + serverTime.Minute + ":" + serverTime.Minute
-                + ":" + serverTime.Second;
+                + ":" + serverTime.Second + "Z";
         }
 
         private List<DateTime> createAllDataTimeClient(List<Segment> segments, DateTime start)
@@ -120,9 +120,7 @@ namespace FlightControlWeb.Models
             DateTime clientTime = new DateTime(Convert.ToInt32(data[0]),
                 Convert.ToInt32(data[1]), Convert.ToInt32(data[2]),
                 Convert.ToInt32(time[0]), Convert.ToInt32(time[1]), 
-                Convert.ToInt32(time[2].Substring(0,2)));
-            //convert to +2 time zone
-            clientTime = clientTime.AddHours(Convert.ToInt32(time[2].Substring(2, 1)));
+                Convert.ToInt32(time[2].Split("Z")[0]));
             return clientTime;
 
         }
@@ -136,7 +134,7 @@ namespace FlightControlWeb.Models
         {
             List<Flight> localServer = GetFlightsFromServer(relative_to);
             List<Flight> externalServer = GetExternalFlights(relative_to);
-            //combine the list
+            
             localServer.AddRange(externalServer);
             return localServer;
         }
