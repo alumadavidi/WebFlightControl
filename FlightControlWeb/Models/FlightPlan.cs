@@ -43,7 +43,7 @@ namespace FlightControlWeb.Models
                 return passengers;
             }
         }
-        public string CompanyName
+        public string Company_name
         {
             set
             {
@@ -54,7 +54,7 @@ namespace FlightControlWeb.Models
                 return company_name;
             }
         }
-        public InitialLocation InitialLocationFlight
+        public InitialLocation Initial_location
         {
             set
             {

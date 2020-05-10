@@ -38,7 +38,7 @@ namespace FlightControlWeb.Models
                 return latitude;
             }
         }
-        public string DataTime
+        public string Date_time
         {
             set
             {
