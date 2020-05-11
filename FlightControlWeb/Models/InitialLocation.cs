@@ -55,6 +55,14 @@ namespace FlightControlWeb.Models
             }
         }
 
+        public bool IsNull()
+        {
+           if(Longitude == null || Latitude == null || DateTime == null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }
 

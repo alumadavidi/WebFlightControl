@@ -11,6 +11,10 @@ namespace FlightControlWeb.Models
 
         public void AddServer(ServerFlight s)
         {
+            if (s.ServerId == null || s.ServerUrl == null)
+            {
+                throw new Exception();
+            }
             db.AddServer(s);
         }
 

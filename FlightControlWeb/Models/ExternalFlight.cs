@@ -20,7 +20,7 @@ namespace FlightControlWeb.Models
         public ExternalFlight(string time)
         {
            
-            url = "/api/Flights?relative_to=<" + time + ">";
+            url = "api/Flights?relative_to="+time;
             flight = new List<Flight>();
            
         }
@@ -31,7 +31,6 @@ namespace FlightControlWeb.Models
             foreach (ServerFlight s in servers)
             {
                 HttpClient httpClient = new HttpClient();
-                //"https://api.github.com"
                 httpClient.BaseAddress = new Uri(s.ServerUrl);
                 //add header fields for jyson
                 httpClient.DefaultRequestHeaders.Add("User-Agent", "C# console program");
@@ -52,13 +51,6 @@ namespace FlightControlWeb.Models
             return flight;
             
         }
-       
-
-
-    
-    
-   
-  
           
     }
 }
