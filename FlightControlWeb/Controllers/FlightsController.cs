@@ -41,13 +41,13 @@ namespace FlightControlWeb.Controllers
         [HttpGet(Name = "GetAllFlight")]
         [Consumes("application/json")]
 
-        public List<Flight> GetAllFlight([FromQuery(Name = "relative_to")] string relative_to)
+        public async Task<List<Flight>> GetAllFlight([FromQuery(Name = "relative_to")] string relative_to)
         {
             List<Flight> flights = new List<Flight>();
             string query = Request.QueryString.Value;
             if (query.Contains("sync_all"))
             {
-                flights = flightManager.GetAllFlights(relative_to);
+                flights = await flightManager.GetAllFlights(relative_to);
             }
             else
             {

@@ -32,6 +32,7 @@ namespace FlightControlWeb.Controllers
 
 
         // DELETE: api/Servers/5
+        
         [HttpDelete("{id}", Name = "DeleteServer")]
         public void DeleteServer(string id)
         {

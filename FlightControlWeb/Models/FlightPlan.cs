@@ -8,7 +8,6 @@ namespace FlightControlWeb.Models
 {
     public class FlightPlan
     {
-        private string flightPlanId;
         private int passengers;
         private string companyName;
         private InitialLocation initialLocation;
@@ -16,7 +15,6 @@ namespace FlightControlWeb.Models
         public FlightPlan(int pass, string company,
             InitialLocation initialLoc, List<Segment> seg)
         {
-            //flightPlanId = id;
             passengers = pass;
             companyName = company;
             initialLocation = initialLoc;

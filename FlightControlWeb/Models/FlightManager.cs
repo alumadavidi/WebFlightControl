@@ -12,7 +12,6 @@ namespace FlightControlWeb.Models
 
         public List<Flight> GetFlightsFromServer(string relative_to)
         {
-            DateTime serverTime = DateTime.UtcNow;
             List<Flight> currentFlight = new List<Flight>();
             List<FlightPlanId> flightPlan = db.GetFlightPlans();
 
@@ -60,7 +59,7 @@ namespace FlightControlWeb.Models
                   
                     //add the new Flight to list
                     currentFlight.Add(new Flight(fid.ID, newX, newY,
-                        f.Passengers, f.CompanyName, convertString(serverTime), false));
+                        f.Passengers, f.CompanyName, convertString(requestTime), false));
                 }
             }
            
@@ -124,16 +123,17 @@ namespace FlightControlWeb.Models
             return clientTime;
 
         }
-        private List<Flight> GetExternalFlights(string relative_to)
+        private async Task<List<Flight>> GetExternalFlights(string relative_to)
         {
-            //TODO: implement
-            return null;
+            ExternalFlight ex = new ExternalFlight(relative_to);
+            List<Flight> flight = await ex.GetRequestAsync();
+            return flight;
         }
 
-        public List<Flight> GetAllFlights(string relative_to)
+        public async Task<List<Flight>> GetAllFlights(string relative_to)
         {
             List<Flight> localServer = GetFlightsFromServer(relative_to);
-            List<Flight> externalServer = GetExternalFlights(relative_to);
+            List<Flight> externalServer = await GetExternalFlights(relative_to);
             
             localServer.AddRange(externalServer);
             return localServer;

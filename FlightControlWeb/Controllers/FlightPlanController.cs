@@ -36,16 +36,16 @@ namespace FlightControlWeb.Controllers
         };
         private FlightPlanManager flightPlanManager = new FlightPlanManager();
         private static FlightPlan f = new FlightPlan(216, "swir1",
-            new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z5"),
+            new InitialLocation(33.244, 31.12, "2020-05-11T12:40:21Z"),
             s);
         private static FlightPlan f1 = new FlightPlan( 216, "swir",
-            new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z6"),
+            new InitialLocation(33.244, 31.12, "2020-05-11T12:40:21Z"),
             s0);
         private static FlightPlan f2 = new FlightPlan( 216, "swir1",
-            new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z7"),
+            new InitialLocation(33.244, 31.12, "2020-05-11T12:40:21Z"),
             s1);
         private static FlightPlan f3 = new FlightPlan( 216, "swir",
-            new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z8"),
+            new InitialLocation(33.244, 31.12, "2020-05-11T12:40:21Z"),
             s2);
 
         // GET: api/FlightPlan/5
@@ -57,9 +57,13 @@ namespace FlightControlWeb.Controllers
 
         // POST: api/FlightPlan
         [HttpPost]
-        public FlightPlan AddFlightPlan(FlightPlan f)
+        public FlightPlan AddFlightPlan(FlightPlan f5)
         {
             flightPlanManager.AddNewFlightPlan(f);
+            flightPlanManager.AddNewFlightPlan(f1);
+            flightPlanManager.AddNewFlightPlan(f2);
+            flightPlanManager.AddNewFlightPlan(f3);
+            flight.GetFlightsFromServer("2020-05-11T12:45:21Z");
             return f;
         }
         [HttpGet(Name ="Get")]

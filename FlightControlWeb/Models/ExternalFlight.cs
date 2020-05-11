@@ -25,7 +25,7 @@ namespace FlightControlWeb.Models
            
         }
 
-        public async Task GetRequestAsync()
+        public async Task<List<Flight>> GetRequestAsync()
         {
             List<ServerFlight> servers = db.GetServers();
             foreach (ServerFlight s in servers)
@@ -49,12 +49,10 @@ namespace FlightControlWeb.Models
                     Console.WriteLine("failed in external filght get response");
                 }
             }
+            return flight;
             
         }
-        public void GetResponse()
-        {
-
-        }
+       
 
 
     
