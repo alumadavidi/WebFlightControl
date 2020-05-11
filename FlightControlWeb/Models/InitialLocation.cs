@@ -3,19 +3,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Data.SQLite;
+using Newtonsoft.Json;
+
 namespace FlightControlWeb.Models
 {
     public class InitialLocation
     {
         private double longitude;
         private double latitude;
-        private string date_time;
+        private string dateTime;
         public InitialLocation(double longi, double lat, string data)
         {
             longitude = longi;
             latitude = lat;
-            date_time = data;
+            dateTime = data;
         }
+        [JsonProperty("longitude")]
         public double Longitude
         {
             set
@@ -27,6 +30,7 @@ namespace FlightControlWeb.Models
                 return longitude;
             }
         }
+        [JsonProperty("latitude")]
         public double Latitude
         {
             set
@@ -38,15 +42,16 @@ namespace FlightControlWeb.Models
                 return latitude;
             }
         }
-        public string Date_time
+        [JsonProperty("date_time")]
+        public string DateTime
         {
             set
             {
-                date_time = value;
+                dateTime = value;
             }
             get
             {
-                return date_time;
+                return dateTime;
             }
         }
 

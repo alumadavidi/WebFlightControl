@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,13 +10,14 @@ namespace FlightControlWeb.Models
     {
         private double longitude;
         private double latitude;
-        private int timespan_seconds;
+        private int timespanSeconds;
         public Segment(double longi, double lat, int tSpan)
         {
             longitude = longi;
             latitude = lat;
-            timespan_seconds = tSpan;
+            timespanSeconds = tSpan;
         }
+        [JsonProperty("longitude")]
         public double Longitude
         {
             set
@@ -27,6 +29,7 @@ namespace FlightControlWeb.Models
                 return longitude;
             }
         }
+        [JsonProperty("latitude")]
         public double Latitude
         {
             set
@@ -38,15 +41,16 @@ namespace FlightControlWeb.Models
                 return latitude;
             }
         }
+        [JsonProperty("timespan_seconds")]
         public int TimespanSeconds
         {
             set
             {
-                timespan_seconds = value;
+                timespanSeconds = value;
             }
             get
             {
-                return timespan_seconds;
+                return timespanSeconds;
             }
         }
 

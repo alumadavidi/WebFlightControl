@@ -22,7 +22,7 @@ namespace FlightControlWeb.Models
                     createDateTimeToClient(relative_to);
                 List<Segment> segments = f.Segments;
                 List<DateTime> dateTimes = createAllDataTimeClient(segments,
-                    createDateTimeToClient(f.Initial_location.Date_time));
+                    createDateTimeToClient(f.InitialLocation.DateTime));
                 //DateTime request, DateTime start, DateTime end
                 if (flightIsNow(requestTime, dateTimes[0], dateTimes[dateTimes.Count -1]))
                 {
@@ -38,10 +38,10 @@ namespace FlightControlWeb.Models
                     if (numSegment == 0)
                     {
                         
-                        longStart = f.Initial_location.Longitude;
+                        longStart = f.InitialLocation.Longitude;
                         longEnd = segments[numSegment].Longitude;
 
-                        latStart = f.Initial_location.Latitude;
+                        latStart = f.InitialLocation.Latitude;
                         latEnd = segments[numSegment].Latitude;
                     }
                     else 
@@ -60,7 +60,7 @@ namespace FlightControlWeb.Models
                   
                     //add the new Flight to list
                     currentFlight.Add(new Flight(fid.ID, newX, newY,
-                        f.Passengers, f.Company_name, convertString(serverTime), false));
+                        f.Passengers, f.CompanyName, convertString(serverTime), false));
                 }
             }
            

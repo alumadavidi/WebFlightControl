@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -9,29 +10,20 @@ namespace FlightControlWeb.Models
     {
         private string flightPlanId;
         private int passengers;
-        private string company_name;
-        private InitialLocation initial_location;
+        private string companyName;
+        private InitialLocation initialLocation;
         private List<Segment> segments;
         public FlightPlan(int pass, string company,
             InitialLocation initialLoc, List<Segment> seg)
         {
             //flightPlanId = id;
             passengers = pass;
-            company_name = company;
-            initial_location = initialLoc;
+            companyName = company;
+            initialLocation = initialLoc;
             segments = seg;
         }
-        //public string FlightPlanId
-        //{
-        //    set
-        //    {
-        //        flightPlanId = value;
-        //    }
-        //    get
-        //    {
-        //        return flightPlanId;
-        //    }
-        //}
+
+        [JsonProperty("passengers")]
         public int Passengers
         {
             set
@@ -43,28 +35,31 @@ namespace FlightControlWeb.Models
                 return passengers;
             }
         }
-        public string Company_name
+        [JsonProperty("company_name")]
+        public string CompanyName
         {
             set
             {
-                company_name = value;
+                companyName = value;
             }
             get
             {
-                return company_name;
+                return companyName;
             }
         }
-        public InitialLocation Initial_location
+        [JsonProperty("initial_location")]
+        public InitialLocation InitialLocation
         {
             set
             {
-                initial_location = value;
+                initialLocation = value;
             }
             get
             {
-                return initial_location;
+                return initialLocation;
             }
         }
+        [JsonProperty("segments")]
         public List<Segment> Segments
         {
             set

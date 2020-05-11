@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,6 +15,7 @@ namespace FlightControlWeb.Models
             serverId = id;
             serverUrl = url;
         }
+        [JsonProperty("ServerId")]
         public string ServerId
         {
             set
@@ -25,6 +27,7 @@ namespace FlightControlWeb.Models
                 return serverId;
             }
         }
+        [JsonProperty("ServerUrl")]
         public string ServerUrl
         {
             set

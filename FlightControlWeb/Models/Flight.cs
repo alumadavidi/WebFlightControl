@@ -8,37 +8,38 @@ namespace FlightControlWeb.Models
 {
     public class Flight
     {
-        private string flight_id;
+        private string flightId;
         private double longitude;
         private double latitude;
         private int passengers;
-        private string company_name;
-        private string date_time;
+        private string companyName;
+        private string dateTime;
         private bool is_external;
         [JsonConstructor]
-        public Flight(string flight_id, double longitude, double latitude, int passengers,
-            string company_name, string date_time, bool is_external)
+        public Flight(string flightId, double longitude, double latitude, int passengers,
+            string companyName, string dateTime, bool isExternal)
         {
-            this.flight_id = flight_id;
+            this.flightId = flightId;
             this.longitude = longitude;
             this.latitude = latitude;
             this.passengers = passengers;
-            this.company_name = company_name;
-            this.date_time = date_time;
-            this.is_external = is_external;
+            this.companyName = companyName;
+            this.dateTime = dateTime;
+            this.is_external = isExternal;
         }
-
+        [JsonProperty("flight_Id")]
         public string Flight_Id
         {
             get
             {
-                return flight_id;
+                return flightId;
             }
             set
             {
-                flight_id = value;
+                flightId = value;
             }
         }
+        [JsonProperty("longitude")]
         public double Longitude
         {
             get
@@ -50,6 +51,7 @@ namespace FlightControlWeb.Models
                 longitude = value;
             }
         }
+        [JsonProperty("latitude")]
         public double Latitude
         {
             get
@@ -61,6 +63,7 @@ namespace FlightControlWeb.Models
                 latitude = value;
             }
         }
+        [JsonProperty("passengers")]
         public int Passengers
         {
             get
@@ -72,29 +75,32 @@ namespace FlightControlWeb.Models
                 passengers = value;
             }
         }
-        public string Company_name
+        [JsonProperty("company_name")]
+        public string CompanyName
         {
             get
             {
-                return company_name;
+                return companyName;
             }
             set
             {
-                company_name = value;
+                companyName = value;
             }
         }
-        public string Date_time
+        [JsonProperty("date_time")]
+        public string DateTime
         {
             get
             {
-                return date_time;
+                return dateTime;
             }
             set
             {
-                date_time = value;
+                dateTime = value;
             }
         }
-        public bool Is_external
+        [JsonProperty("is_external")]
+        public bool IsExternal
         {
             get
             {

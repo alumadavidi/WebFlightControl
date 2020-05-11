@@ -141,9 +141,9 @@ namespace FlightControlWeb
         {
 
             using var cmd = new SQLiteCommand(connection);
-            string a = " VALUES(" + "\'" + id + "\',\'" + f.Company_name + "\'," +
-                f.Passengers+ ",\'" + f.Initial_location.Date_time + "\',"+
-                f.Initial_location.Longitude+","+ f.Initial_location.Latitude+")";
+            string a = " VALUES(" + "\'" + id + "\',\'" + f.CompanyName + "\'," +
+                f.Passengers+ ",\'" + f.InitialLocation.DateTime + "\',"+
+                f.InitialLocation.Longitude+","+ f.InitialLocation.Latitude+")";
             cmd.CommandText = "INSERT INTO FlightPlanTable(id, " +
                 "companyName, passengers, dateTime, longitude, latitude )" + a;
             cmd.ExecuteNonQuery();
