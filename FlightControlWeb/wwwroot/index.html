@@ -3,29 +3,43 @@
 <head>
     <title>flight</title>
     <meta charset="utf-8">
+    <script src="bootstrap/js/dragAndDropScripts.js"></script>
+    <script src="bootstrap/js/mapScripts.js"></script>
+    <script src="bootstrap/js/listFlightScripts.js"></script>
     <link href="bootstrap/css/global.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-
     <style>
         #map {
             height: 500px;
             width: 103%;
         }
 
-        
+        #details {
+            visibility: hidden;
+        }
+
+        #draganddropimage {
+            visibility: hidden;
+        }
+
+        #droptarget {
+            float: left;
+            padding: 10px;
+            border: 1px solid #aaaaaa;
+        }
     </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-7 border">
-                <div class="row bg-primary" id="map">
+                <div class="row" id="map">
                     map
                 </div>
-                <div class="row bg-dark">
+                <div class="row bg-dark" id="details">
                     <h2 class="text-white">Flight Details</h2>
                     <table class="table table-dark">
                         <thead>
@@ -41,233 +55,43 @@
                     </table>
                 </div>
             </div>
-            <div class="dropzone col-md-5" id="dropzone">
-                
-
-                <h3>
-                    My flights
-                </h3>
-                <table class="table table-sm" id="table1">
-                    <thead>
-                        <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>id</th>
-                            <th>longitude</th>
-                            <th>latitude</th>
-                            <th>passengers</th>
-                            <th>company name</th>
-                            <th>date time</th>
-                            <th>
-
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <tr class="table-active">
-                            <td>
-
-                                1
-                            </td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    x
-                                </button>
-                            </td>
-
-                        </tr>
-                        <tr class="table-success">
-                            <td>
-                                2
-                            </td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    x
-                                </button>
-                            </td>
-
-                        </tr>
-                        <tr class="table-warning">
-                            <td>
-                                3
-                            </td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    x
-                                </button>
-                            </td>
-
-                        </tr>
-                        <tr class="table-danger">
-                            <td>
-                                4
-                            </td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm">
-                                    x
-                                </button>
-                            </td>
-
-                        </tr>
-                    </tbody>
-                </table>
-                <h3>
-                    ex flight
-                </h3>
-                <table class="table table-sm" id="table2">
-                    <thead>
-                        <tr>
-                            <th>
-                                #
-                            </th>
-                            <th>id</th>
-                            <th>longitude</th>
-                            <th>latitude</th>
-                            <th>passengers</th>
-                            <th>company name</th>
-                            <th>date time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <tr class="table-active">
-                            <td>
-                                1
-                            </td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-
-                        </tr>
-                        <tr class="table-success">
-                            <td>
-                                2
-                            </td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-
-                        </tr>
-                        <tr class="table-warning">
-                            <td>
-                                3
-                            </td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-
-                            <td>-</td>
-                        </tr>
-                        <tr class="table-danger">
-                            <td>
-                                4
-                            </td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-
-                            <td>-</td>
-                        </tr>
-                    </tbody>
-                </table>
-
+            
+            <div class="droptarget col-md-5" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
+                <div class="jumbotron" id="flightlist">
+                    <h3>My flights</h3>
+                    <table class="table table-sm" id="myflights">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>company name</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                    <h3>ex flight</h3>
+                    <table class="table table-sm" id="exflights">
+                        <thead>
+                            <tr>
+                                <th>id</th>
+                                <th>company name</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+                <img src="draganddrop.jpeg" id="draganddropimage" />
             </div>
         </div>
     </div>
-    <div>
-        <script>
-            (function () {
-                var dropzone = document.getElementById('dropzone');
-                var table1 = document.getElementById('table1');
-                var table2 = document.getElementById('table2');
-                var img = document.getElementById('hhh');
-
-                var upload = function () {
-
-                }
-                dropzone.ondrop = function (e) {
-                    
-                    e.preventDefault();
-                    upload(e);
-                    table1.style.visibility = "visible";
-                    table2.style.visibility = "visible";
-                    return false;
-                }
-                dropzone.ondragover = function () {
-                    table1.style.visibility = "hidden";
-                    table2.style.visibility = "hidden";
-                    
-
-
-                    return false;
-                }
-                dropzone.ondragleave = function () {
-                    table1.style.visibility = "visible";
-                    table2.style.visibility = "visible";
-
-                    return false;
-                }
-            }());
-        </script>
-    </div>
-    <script>
-        var flightsUrl = "api/flightPlan";
-        $.getJSON(flightUrl, function (data) {
-            console.log('ll');
-        }());
-    </script>
-
-    <script>
-        function initMap() {
-            // Map options
-            var options = {
-                zoom: 8,
-                center: { lat: 42.3601, lng: -71.0589 }
-            }
-
-            // New map
-            var map = new google.maps.Map(document.getElementById('map'), options);
-        }
-    </script>
-
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA372PcuJQKYrKADjhHTLLDVcfsoCzF-4M&callback=initMap">
+    </script>
+    <script>
+        var flightsUrl = "api/flights?relative_to=2020-12-26T23:56:21Z5";
+        $.ajax({
+
+        })
     </script>
 
 
