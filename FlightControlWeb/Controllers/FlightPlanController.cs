@@ -59,11 +59,7 @@ namespace FlightControlWeb.Controllers
         [HttpPost]
         public FlightPlan AddFlightPlan(FlightPlan f5)
         {
-            flightPlanManager.AddNewFlightPlan(f);
-            flightPlanManager.AddNewFlightPlan(f1);
-            flightPlanManager.AddNewFlightPlan(f2);
-            flightPlanManager.AddNewFlightPlan(f3);
-            flight.GetFlightsFromServer("2020-05-11T12:45:21Z");
+            
             return f;
         }
         [HttpGet(Name ="Get")]

@@ -53,7 +53,6 @@ namespace FlightControlWeb.Controllers
             {
                 flights = flightManager.GetFlightsFromServer(relative_to);
             }
-
             return flights;
         }
 

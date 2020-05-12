@@ -3,9 +3,7 @@
 <head>
     <title>flight</title>
     <meta charset="utf-8">
-    <script src="bootstrap/js/dragAndDropScripts.js"></script>
-    <script src="bootstrap/js/mapScripts.js"></script>
-    <script src="bootstrap/js/listFlightScripts.js"></script>
+    
     <link href="bootstrap/css/global.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
@@ -33,6 +31,9 @@
     </style>
 </head>
 <body>
+    <script src="bootstrap/js/dragAndDropScripts.js"></script>
+    <script src="bootstrap/js/mapScripts.js"></script>
+    <script src="bootstrap/js/listFlightScripts.js"></script>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-7 border">
@@ -55,22 +56,26 @@
                     </table>
                 </div>
             </div>
-            
+
             <div class="droptarget col-md-5" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
                 <div class="jumbotron" id="flightlist">
                     <h3>My flights</h3>
-                    <table class="table table-sm" id="myflights">
+                    <button onclick="myFunction()">X</button>
+
+                    <p id="demo"></p>
+                    <table class="table table-sm" id="myflightstbl">
                         <thead>
                             <tr>
                                 <th>id</th>
                                 <th>company name</th>
+
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody></tbody>
                     </table>
                     <h3>ex flight</h3>
-                    <table class="table table-sm" id="exflights">
+                    <table class="table table-sm" id="exflightstbl">
                         <thead>
                             <tr>
                                 <th>id</th>
@@ -87,11 +92,25 @@
     <script async defer
             src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA372PcuJQKYrKADjhHTLLDVcfsoCzF-4M&callback=initMap">
     </script>
-    <script>
-        var flightsUrl = "api/flights?relative_to=2020-12-26T23:56:21Z5";
-        $.ajax({
 
-        })
+    <script>
+        var flightsUrl = "api/Flights";
+
+        $.ajax({
+            type: "GET",
+            url: flightsUrl,
+            dataType: 'json',
+            data: {
+                relative_to: "2020-12-26T23:56:21Z5"
+            }, success: function (data) {
+                data.forEach(function (flight) {
+                    $("#myflightstbl").append("<tr id=" + flight.flight_Id + "><td>" + flight.flight_Id + "</td>" + "<td>" +
+                        flight.company_name + "</td>" + "<td>" +
+                        '<button onclick="delFlight()">X</button>'
+                        + "</td></tr>");
+                });
+            }
+        });
     </script>
 
 
