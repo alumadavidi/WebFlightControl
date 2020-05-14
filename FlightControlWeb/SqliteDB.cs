@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Data.SQLite;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,14 +29,34 @@ namespace FlightControlWeb
         }
         private SqliteDB()
         {
-            //create DB
             string cs = "DataSource=FlightControl.db;";
-            //open connection
-            connection = new SQLiteConnection(cs);
-            connection.Open();
-            BuildFlightPlanTable();
-            BuildSegmentTable();
-            BuildServerTable();
+            if (!File.Exists("FlightControl.db"))
+            {
+                
+                //open connection
+                connection = new SQLiteConnection(cs);
+                connection.Open();
+
+                BuildFlightPlanTable();
+                BuildSegmentTable();
+                BuildServerTable();
+            } else
+            {
+                connection = new SQLiteConnection(cs);
+                connection.Open();
+            }
+
+            ////create DB
+            //string cs = "DataSource=FlightControl.db;";
+            ////open connection
+            //connection = new SQLiteConnection(cs);
+            //connection.Open();
+            
+            //BuildFlightPlanTable();
+            //BuildSegmentTable();
+            //BuildServerTable();
+
+
             //AddServer(new ServerFlight("12345", "www.ghh"));
             //List<Segment> s2 = new List<Segment>()
             // {

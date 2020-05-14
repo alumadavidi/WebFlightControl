@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Connections;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightControlWeb.Controllers
@@ -15,18 +16,34 @@ namespace FlightControlWeb.Controllers
         private ServerManager serverManager = new ServerManager();
         // GET: api/Server
         [HttpGet(Name = "GetAllServer")]
-        public List<ServerFlight> GetAllServer()
+        public ActionResult<List<ServerFlight>> GetAllServer()
         {
-            return serverManager.GetServerFlights();
+            try
+            {
+                return Ok(serverManager.GetServerFlights());
+            } catch
+            {
+                return NotFound();
+            }
         }
 
 
 
         // POST: api/Servers
         [HttpPost]
-        public void Post([FromBody] ServerFlight s)
+        public ActionResult Post([FromBody] ServerFlight s)
         {
-            serverManager.AddServer(s);
+            try 
+            {
+                serverManager.AddServer(s);
+                //created
+                return Created("create new serverFlight", s);
+            }
+            catch
+            {
+                //InternalServerErrorResult
+                return StatusCode(500);
+            }
         }
 
 
@@ -34,9 +51,16 @@ namespace FlightControlWeb.Controllers
         // DELETE: api/Servers/5
         
         [HttpDelete("{id}", Name = "DeleteServer")]
-        public void DeleteServer(string id)
+        public ActionResult DeleteServer(string id)
         {
-            serverManager.deleteServer(id);
+            try
+            {
+                serverManager.deleteServer(id);
+                return Ok();
+            } catch
+            {
+                return NotFound(id);
+            }
         }
     }
 }

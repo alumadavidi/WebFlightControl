@@ -41,27 +41,42 @@ namespace FlightControlWeb.Controllers
         [HttpGet(Name = "GetAllFlight")]
         [Consumes("application/json")]
 
-        public async Task<List<Flight>> GetAllFlight([FromQuery(Name = "relative_to")] string relative_to)
+        public async Task<ActionResult<List<Flight>>> GetAllFlight([FromQuery(Name = "relative_to")] string relative_to)
         {
-            List<Flight> flights = new List<Flight>();
-            string query = Request.QueryString.Value;
-            if (query.Contains("sync_all"))
+            try
             {
-                flights = await flightManager.GetAllFlights(relative_to);
-            }
-            else
+                List<Flight> flights = new List<Flight>();
+                string query = Request.QueryString.Value;
+                if (query.Contains("sync_all"))
+                {
+                    flights = await flightManager.GetAllFlights(relative_to);
+                }
+                else
+                {
+                    flights = flightManager.GetFlightsFromServer(relative_to);
+                }
+                return Ok(flights);
+            } catch
             {
-                flights = flightManager.GetFlightsFromServer(relative_to);
+                return NotFound(relative_to);
             }
-            return flights;
+
+           // return flights;
         }
 
 
         // DELETE: api/ApiWithActions/5
         [HttpDelete("{id}")]
-        public void Delete(string id)
+        public ActionResult Delete(string id)
         {
-            flightManager.DeleteFlight(id);
+            try
+            {
+                flightManager.DeleteFlight(id);
+                return Ok();
+            } catch
+            {
+                return NotFound(id);
+            }
         }
     }
 }

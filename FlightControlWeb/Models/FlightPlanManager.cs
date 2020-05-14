@@ -10,10 +10,14 @@ namespace FlightControlWeb.Models
         private SqliteDB db = SqliteDB.Instance;
         
        
-        public FlightPlan AddNewFlightPlan(FlightPlan flightPlan)
+        public void AddNewFlightPlan(FlightPlan flightPlan)
         {
+            if (flightPlan == null || flightPlan.isNull() ||
+                    !TimeFunc.ValidStringDate(flightPlan.InitialLocation.DateTime))
+            {
+                throw new Exception();
+            }
             db.AddFlightPlan(flightPlan, createId());
-            return flightPlan;
         }
         public FlightPlan GetFlightPlanById(string id)
         {

@@ -53,6 +53,14 @@ namespace FlightControlWeb.Models
                 return timespanSeconds;
             }
         }
-
+      
+        public bool IsNull()
+        {
+            if(Longitude == null || Latitude == null || TimespanSeconds == null)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

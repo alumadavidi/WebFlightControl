@@ -18,10 +18,10 @@ namespace FlightControlWeb.Models
             foreach(FlightPlanId fid in flightPlan){
                 FlightPlan f = fid.FlightP;
                 DateTime requestTime = 
-                    createDateTimeToClient(relative_to);
+                    TimeFunc.CreateDateTimeFromString(relative_to);
                 List<Segment> segments = f.Segments;
                 List<DateTime> dateTimes = createAllDataTimeClient(segments,
-                    createDateTimeToClient(f.InitialLocation.DateTime));
+                    TimeFunc.CreateDateTimeFromString(f.InitialLocation.DateTime));
                 //DateTime request, DateTime start, DateTime end
                 if (flightIsNow(requestTime, dateTimes[0], dateTimes[dateTimes.Count -1]))
                 {
@@ -59,19 +59,19 @@ namespace FlightControlWeb.Models
                   
                     //add the new Flight to list
                     currentFlight.Add(new Flight(fid.ID, newX, newY,
-                        f.Passengers, f.CompanyName, convertString(requestTime), false));
+                        f.Passengers, f.CompanyName, TimeFunc.ConvertDate(requestTime), false));
                 }
             }
            
             return currentFlight;
         }
 
-        private string convertString(DateTime serverTime)
-        {
-            return "" + serverTime.Year + "-" + serverTime.Month + "-" + serverTime.Day
-                + "T" + serverTime.Hour + ":" + serverTime.Minute + ":" + serverTime.Minute
-                + ":" + serverTime.Second + "Z";
-        }
+        //private string convertString(DateTime serverTime)
+        //{
+        //    return "" + serverTime.Year + "-" + serverTime.Month + "-" + serverTime.Day
+        //        + "T" + serverTime.Hour + ":" + serverTime.Minute + ":" + serverTime.Minute
+        //        + ":" + serverTime.Second + "Z";
+        //}
 
         private List<DateTime> createAllDataTimeClient(List<Segment> segments, DateTime start)
         {
@@ -110,19 +110,19 @@ namespace FlightControlWeb.Models
             return now;
         }
       
-        private DateTime createDateTimeToClient(string t)
-        {
-            //split the time from client
-            string[] dataTime = t.Split("T");
-            string[] data = dataTime[0].Split("-");
-            string[] time = dataTime[1].Split(":");
-            DateTime clientTime = new DateTime(Convert.ToInt32(data[0]),
-                Convert.ToInt32(data[1]), Convert.ToInt32(data[2]),
-                Convert.ToInt32(time[0]), Convert.ToInt32(time[1]), 
-                Convert.ToInt32(time[2].Split("Z")[0]));
-            return clientTime;
+        //private DateTime createDateTimeToClient(string t)
+        //{
+        //    //split the time from client
+        //    string[] dataTime = t.Split("T");
+        //    string[] data = dataTime[0].Split("-");
+        //    string[] time = dataTime[1].Split(":");
+        //    DateTime clientTime = new DateTime(Convert.ToInt32(data[0]),
+        //        Convert.ToInt32(data[1]), Convert.ToInt32(data[2]),
+        //        Convert.ToInt32(time[0]), Convert.ToInt32(time[1]), 
+        //        Convert.ToInt32(time[2].Split("Z")[0]));
+        //    return clientTime;
 
-        }
+        //}
         private async Task<List<Flight>> GetExternalFlights(string relative_to)
         {
             ExternalFlight ex = new ExternalFlight(relative_to);

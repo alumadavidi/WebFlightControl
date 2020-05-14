@@ -69,5 +69,33 @@ namespace FlightControlWeb.Models
                 return segments;
             }
         }
+
+        public bool isNull()
+        {
+            if (Passengers == null || CompanyName == null 
+                || InitialLocation == null || InitialLocation.IsNull() 
+                || Segments == null || SegmentNull(Segments))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public bool SegmentNull(List<Segment> segments)
+        {
+            foreach(Segment s in segments)
+            {
+                if(s == null || s.IsNull())
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        internal bool CorrectTime()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

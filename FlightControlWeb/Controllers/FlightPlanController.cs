@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
+using System.Web.Http.Results;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -50,23 +52,36 @@ namespace FlightControlWeb.Controllers
 
         // GET: api/FlightPlan/5
         [HttpGet("{id}", Name = "GetFlightPlan")]
-        public FlightPlan GetFlightPlan(string id)
+        public ActionResult<FlightPlan> GetFlightPlan(string id)
         {
-            return flightPlanManager.GetFlightPlanById(id);
+            try
+            {
+                return Ok(flightPlanManager.GetFlightPlanById(id));
+            } catch
+            {
+                return NotFound(id);
+            }
         }
 
         // POST: api/FlightPlan
         [HttpPost]
-        public FlightPlan AddFlightPlan(FlightPlan f5)
+        public ActionResult AddFlightPlan(FlightPlan f)
         {
-            
-            return f;
-        }
-        [HttpGet(Name ="Get")]
-        public FlightPlan Get()
-        {
-            return f;
-        }
+            try
+            {
+                flightPlanManager.AddNewFlightPlan(f);
+                //flightPlanManager.AddNewFlightPlan(f1);
+                //flightPlanManager.AddNewFlightPlan(f2);
+                //flightPlanManager.AddNewFlightPlan(f3);
+                //flight.GetFlightsFromServer("2020-05-11T12:45:21Z");
 
+                return Created("create new FlightPlan", f);
+            } 
+            catch
+            {
+                //InternalServerErrorResult
+                return StatusCode(500);
+            }
+        }
     }
 }
