@@ -3,12 +3,15 @@
 <head>
     <title>flight</title>
     <meta charset="utf-8">
-    
+
     <link href="bootstrap/css/global.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
     <style>
         #map {
             height: 500px;
@@ -31,9 +34,7 @@
     </style>
 </head>
 <body>
-    <script src="bootstrap/js/dragAndDropScripts.js"></script>
-    <script src="bootstrap/js/mapScripts.js"></script>
-    <script src="bootstrap/js/listFlightScripts.js"></script>
+    <script src="dragAndDropScripts.js"></script>
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-7 border">
@@ -60,9 +61,6 @@
             <div class="droptarget col-md-5" ondrop="drop(event)" ondragover="allowDrop(event)" ondragleave="dragLeave(event)">
                 <div class="jumbotron" id="flightlist">
                     <h3>My flights</h3>
-                    <button onclick="myFunction()">X</button>
-
-                    <p id="demo"></p>
                     <table class="table table-sm" id="myflightstbl">
                         <thead>
                             <tr>
@@ -89,31 +87,8 @@
             </div>
         </div>
     </div>
-    <script async defer
-            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA372PcuJQKYrKADjhHTLLDVcfsoCzF-4M&callback=initMap">
-    </script>
-
-    <script>
-        var flightsUrl = "api/Flights";
-
-        $.ajax({
-            type: "GET",
-            url: flightsUrl,
-            dataType: 'json',
-            data: {
-                relative_to: "2020-12-26T23:56:21Z5"
-            }, success: function (data) {
-                data.forEach(function (flight) {
-                    $("#myflightstbl").append("<tr id=" + flight.flight_Id + "><td>" + flight.flight_Id + "</td>" + "<td>" +
-                        flight.company_name + "</td>" + "<td>" +
-                        '<button onclick="delFlight()">X</button>'
-                        + "</td></tr>");
-                });
-            }
-        });
-    </script>
-
-
+    <script src="mapScripts.js"></script>
+    <script src="listFlightScripts.js"></script>
 
 </body>
 </html>
