@@ -65,6 +65,7 @@ namespace FlightControlWeb.Controllers
 
         // POST: api/FlightPlan
         [HttpPost]
+
         public ActionResult AddFlightPlan(FlightPlan f)
         {
             try
