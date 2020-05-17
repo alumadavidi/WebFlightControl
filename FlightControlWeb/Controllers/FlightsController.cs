@@ -43,25 +43,25 @@ namespace FlightControlWeb.Controllers
 
         public async Task<ActionResult<List<Flight>>> GetAllFlight([FromQuery(Name = "relative_to")] string relative_to)
         {
-            try
+            
+            List<Flight> flights = new List<Flight>();
+            string query = Request.QueryString.Value;
+            if (query.Contains("sync_all"))
             {
-                List<Flight> flights = new List<Flight>();
-                string query = Request.QueryString.Value;
-                if (query.Contains("sync_all"))
-                {
-                    flights = await flightManager.GetAllFlights(relative_to);
-                }
-                else
-                {
-                    flights = flightManager.GetFlightsFromServer(relative_to);
-                }
+                flights = await flightManager.GetAllFlights(relative_to);
+            }
+            else
+            {
+                flights = flightManager.GetFlightsFromServer(relative_to);
+            }
+            if (flights.Count != 0)
+            {
                 return Ok(flights);
-            } catch
+            } else
             {
                 return NotFound(relative_to);
             }
 
-           // return flights;
         }
 
 

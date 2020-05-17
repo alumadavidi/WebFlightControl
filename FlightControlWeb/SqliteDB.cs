@@ -37,9 +37,15 @@ namespace FlightControlWeb
                 connection = new SQLiteConnection(cs);
                 connection.Open();
 
-                BuildFlightPlanTable();
-                BuildSegmentTable();
-                BuildServerTable();
+                try
+                {
+                    BuildFlightPlanTable();
+                    BuildSegmentTable();
+                    BuildServerTable();
+                } catch
+                {
+                    Console.WriteLine("FAILED IN BUILD DB");
+                }
             } else
             {
                 connection = new SQLiteConnection(cs);
@@ -106,23 +112,23 @@ namespace FlightControlWeb
             using var cmd = new SQLiteCommand(connection);
             //create table
             cmd.CommandText = "DROP TABLE IF EXISTS FlightPlanTable";
-            cmd.ExecuteNonQuery();
+            int s= cmd.ExecuteNonQuery();
             //add column
             cmd.CommandText = @"CREATE TABLE FlightPlanTable(id TEXT PRIMARY KEY,
                     companyName TEXT, passengers INT, dateTime TEXT, longitude DOUBLE,
                     latitude DOUBLE)";
-            cmd.ExecuteNonQuery();
+            s = cmd.ExecuteNonQuery();
         }
         private void BuildSegmentTable()
         {
             using var cmd = new SQLiteCommand(connection);
             //create table
             cmd.CommandText = "DROP TABLE IF EXISTS SegmentTable";
-            cmd.ExecuteNonQuery();
+            int s = cmd.ExecuteNonQuery();
             //add column
             cmd.CommandText = @"CREATE TABLE SegmentTable(id TEXT,
                     longitude DOUBLE, latitude DOUBLE, timespanSeconds INT)";
-            cmd.ExecuteNonQuery();
+            s = cmd.ExecuteNonQuery();
         }
 
 
@@ -131,11 +137,11 @@ namespace FlightControlWeb
             using var cmd = new SQLiteCommand(connection);
             //create table
             cmd.CommandText = "DROP TABLE IF EXISTS ServerTable";
-            cmd.ExecuteNonQuery();
+            int s = cmd.ExecuteNonQuery();
             //add column
             cmd.CommandText = @"CREATE TABLE ServerTable(id TEXT PRIMARY KEY,
                     url TEXT)";
-            cmd.ExecuteNonQuery();
+            s = cmd.ExecuteNonQuery();
         }
 
         public void AddServer(ServerFlight s)
@@ -144,7 +150,12 @@ namespace FlightControlWeb
             string a = " VALUES(" + "\'" + s.ServerId + "\',\'" + s.ServerUrl + "\')";
             cmd.CommandText = "INSERT INTO ServerTable(id,url)" + a;
                 
-            cmd.ExecuteNonQuery();
+            int suc = cmd.ExecuteNonQuery();
+            //0 - not insert, -1 exception
+            if (suc == 0 || suc == -1)
+            {
+                throw new Exception();
+            }
 
             //string stm = "SELECT * FROM ServerTable LIMIT 5";
 
@@ -167,8 +178,16 @@ namespace FlightControlWeb
                 f.InitialLocation.Longitude+","+ f.InitialLocation.Latitude+")";
             cmd.CommandText = "INSERT INTO FlightPlanTable(id, " +
                 "companyName, passengers, dateTime, longitude, latitude )" + a;
-            cmd.ExecuteNonQuery();
-            AddSegmentOfFlight(f.Segments, id);
+            int suc = cmd.ExecuteNonQuery();
+            //0 - not insert, -1 exception
+            if (suc == 0 || suc == -1)
+            {
+                throw new Exception();
+            } else
+            {
+                AddSegmentOfFlight(f.Segments, id);
+            }
+           
             //string stm = "SELECT * FROM FlightPlanTable LIMIT 5";
 
             //using var cmd1 = new SQLiteCommand(stm, connection);
@@ -193,7 +212,13 @@ namespace FlightControlWeb
                     s.Latitude + "," + s.TimespanSeconds+ ")";
                 cmd.CommandText = "INSERT INTO SegmentTable(id,longitude," +
                     " latitude, timespanSeconds)" + a;
-                cmd.ExecuteNonQuery();
+                int suc = cmd.ExecuteNonQuery();
+                //0 - not insert, -1 exception
+                if (suc == 0 || suc == -1)
+                {
+                    throw new Exception();
+                }
+                
             }
 
             //string stm = "SELECT * FROM SegmentTable LIMIT 5";
@@ -224,7 +249,7 @@ namespace FlightControlWeb
             return serverFlights;
         }
 
-
+        //
         public List<FlightPlanId> GetFlightPlans()
         {
             List<FlightPlanId> flights = new List<FlightPlanId>();
@@ -244,21 +269,23 @@ namespace FlightControlWeb
             }
             return flights;
         }
-
+        //throw exception if not found
         public FlightPlan GetFlightPlanById(string id)
         {
+            FlightPlan f = null;
             string stm = "SELECT * FROM FlightPlanTable WHERE id=\'" + id + "\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
             using SQLiteDataReader rdr = cmd1.ExecuteReader();
-            rdr.Read();
-            List<Segment> seg = GetSegmentById(rdr.GetString(0));
+            if (rdr.Read())
+            {
+                List<Segment> seg = GetSegmentById(rdr.GetString(0));
 
-            InitialLocation initLoc = new InitialLocation(
-                rdr.GetDouble(4), rdr.GetDouble(5), rdr.GetString(3));
-            FlightPlan f = new FlightPlan(rdr.GetInt32(2), 
-                rdr.GetString(1), initLoc, seg);
-
+                InitialLocation initLoc = new InitialLocation(
+                    rdr.GetDouble(4), rdr.GetDouble(5), rdr.GetString(3));
+                f = new FlightPlan(rdr.GetInt32(2),
+                    rdr.GetString(1), initLoc, seg);
+            }
             return f;
         }
 
@@ -270,6 +297,7 @@ namespace FlightControlWeb
 
             using var cmd1 = new SQLiteCommand(stm, connection);
             using SQLiteDataReader rdr = cmd1.ExecuteReader();
+
             while (rdr.Read())
             {
                 //(id,longitude, latitude, timespanSeconds)
@@ -284,8 +312,15 @@ namespace FlightControlWeb
             string stm = "DELETE FROM FlightPlanTable WHERE id=\'" + id+"\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
-            cmd1.ExecuteNonQuery();
-            RemoveSegments(id);
+            int s = cmd1.ExecuteNonQuery();
+            //0 - not found, -1 exception
+            if (s == 0 || s == -1) {
+                throw new Exception();
+            } else
+            {
+                RemoveSegments(id);
+            }
+           
         }
 
         private void RemoveSegments(string id)
@@ -293,7 +328,12 @@ namespace FlightControlWeb
             string stm = "DELETE FROM SegmentTable WHERE id=\'" + id+"\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
-            cmd1.ExecuteNonQuery();
+            int s = cmd1.ExecuteNonQuery();
+            //0 - not found, -1 exception
+            if (s == 0 || s == -1)
+            {
+                throw new Exception();
+            }
         }
 
         public void RemoveServer(string id)
@@ -301,7 +341,12 @@ namespace FlightControlWeb
             string stm = "DELETE FROM ServerTable WHERE id=\'" + id + "\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
-            cmd1.ExecuteNonQuery();
+            int s = cmd1.ExecuteNonQuery();
+            //0 - not found, -1 exception
+            if (s == 0 || s == -1)
+            {
+                throw new Exception();
+            }
         }
 
 
