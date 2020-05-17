@@ -65,7 +65,7 @@ namespace FlightControlWeb.Controllers
         }
 
 
-        // DELETE: api/ApiWithActions/5
+        // DELETE: api/Flights/5
         [HttpDelete("{id}")]
         public ActionResult Delete(string id)
         {
