@@ -8,17 +8,10 @@
     $("#draganddropimage").show();
 }
 
-function dragLeave(event) {
+function dropInTarget(event) {
     event.preventDefault();
     $("#draganddropimage").hide();
     $("#flightlist").show();
-}
-
-function drop(event) {
-    event.preventDefault();
-    $("#draganddropimage").hide();
-    $("#flightlist").show();
-    console.log(event.dataTransfer.files);
     //if (event.dataTransfer.items[0] == 'file') {
         var file = event.dataTransfer.files[0];
         var xhr = new XMLHttpRequest();
@@ -28,15 +21,11 @@ function drop(event) {
         xhr.send(file);
     //}
 }
-function delFlight(flight) {
-    $.ajax({
-        type: "DELETE",
-        url: "api/Flights/" + flight.id,
-        dataType: 'json',
-        success: function (data) {
-        }
-    });
-    delFlightFromList(flight);
-    deleteMarker(flight)
+function drop(event) {
+    event.preventDefault();
+    $("#draganddropimage").hide();
+    $("#flightlist").show();
 }
+
+
 
