@@ -69,15 +69,19 @@ function addIconToMap(latitude, longitude, flightId) {
 
 function deleteMarker(flightId) {
     var marker = markersMap[flightId]
-    if (clickedMarkers == marker) {
+    if (clickedMarker == marker) {
         marker.fire('click');
     } 
     map.removeLayer(marker);
 
 }
 
-function rowClick(flight) {
-    markersMap[flight.id].fire('click');
+function rowClick(event, flight) {
+    console.log(event.target);
+    var id = event.target.id;
+    if (id != "trash" && id != "delButton") {
+        markersMap[flight.id].fire('click');
+    }
 }
 
 
@@ -85,7 +89,7 @@ function updateMrkerLatlng(latitude, longitude, flightId){
     var marker = markersMap[flightId];
     marker.setLatLng([latitude, longitude]);
 }
-
+//initial
 function drowSegLines(segments) {
     var polylinePoints = []
     segments.forEach(function (segnent) {

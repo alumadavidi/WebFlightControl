@@ -37,7 +37,7 @@ function getEndTime(segments, initTime) {
     console.log(date);
 
     var d2 = new Date(date);
-    d2.setSeconds(date.getSecondss() + count);
+    //d2.setSeconds(date.getSecondss() + count);
     console.log(d2);
 }
 

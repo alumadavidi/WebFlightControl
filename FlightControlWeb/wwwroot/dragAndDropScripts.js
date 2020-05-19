@@ -15,7 +15,8 @@ function dropInTarget(event) {
     //if (event.dataTransfer.items[0] == 'file') {
         var file = event.dataTransfer.files[0];
         var xhr = new XMLHttpRequest();
-        var flightUrl = "api/FlightPlan"
+    var flightUrl = "api/FlightPlan"
+    //check
         xhr.open("POST", flightUrl, true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.send(file);

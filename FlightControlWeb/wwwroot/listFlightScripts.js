@@ -1,5 +1,4 @@
 ﻿var flightListInTable = [];
-
 function updateTable() {
     var flightsFromServer = [];
     var flightsUrl = "api/Flights";
@@ -33,14 +32,14 @@ function updateTable() {
 var setTimer = setInterval(updateTable, 1000);
 
 function addFlightToView(flight) {
-    var table
+    
     if (flight.is_external) {
         $("#exflightstbl").append("<tr id=" + '"' + flight.flight_Id + '"' + 'onclick="rowClick(' + flight.flight_Id + ')"' + "><td>" + flight.flight_Id + "</td>" + "<td>" +
             flight.company_name + "</td></tr>");
     } else {
-        $("#myflightstbl").append("<tr id=" + '"' + flight.flight_Id + '"' + 'onclick="rowClick(' + flight.flight_Id + ')"' + "><td>" + flight.flight_Id + "</td>" + "<td>" +
+        $("#myflightstbl").append("<tr id=" + '"' + flight.flight_Id + '"' + 'onclick="rowClick(event, ' + flight.flight_Id + ')"' + "><td>" + flight.flight_Id + "</td>" + "<td>" +
             flight.company_name + "</td>" + "<td>" +
-            '<button id="delButton" onclick="delFlight(' + flight.flight_Id + ')"><i class="fa fa-trash"></i></button>'
+            '<button id="delButton" onclick="delFlight(event,' + flight.flight_Id + ')"><i id="trash" class="fa fa-trash"></i></button>'
             + "</td></tr>");
     }
     var latitude = flight.latitude;
@@ -64,13 +63,15 @@ function unHighlightElements(flight) {
     row.style.border = "none";
 }
 
-function delFlight(flight) {
+function delFlight(event, flight) {
     $.ajax({
         type: "DELETE",
         url: "api/Flights/" + flight.id,
         dataType: 'json',
         success: function (data) {
             delFlightFromView(flight.id);
+            event.cancelBubble = true;
+
         }
     });
 }
