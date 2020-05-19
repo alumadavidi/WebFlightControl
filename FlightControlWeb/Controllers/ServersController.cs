@@ -18,10 +18,12 @@ namespace FlightControlWeb.Controllers
         [HttpGet(Name = "GetAllServer")]
         public ActionResult<List<ServerFlight>> GetAllServer()
         {
-            try
+            List<ServerFlight> server = serverManager.GetServerFlights();
+            if (server.Count != 0)
             {
-                return Ok(serverManager.GetServerFlights());
-            } catch
+                return Ok(server);
+            }
+            else
             {
                 return NotFound();
             }

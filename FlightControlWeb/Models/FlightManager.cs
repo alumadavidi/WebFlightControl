@@ -109,24 +109,12 @@ namespace FlightControlWeb.Models
             }
             return now;
         }
-      
-        //private DateTime createDateTimeToClient(string t)
-        //{
-        //    //split the time from client
-        //    string[] dataTime = t.Split("T");
-        //    string[] data = dataTime[0].Split("-");
-        //    string[] time = dataTime[1].Split(":");
-        //    DateTime clientTime = new DateTime(Convert.ToInt32(data[0]),
-        //        Convert.ToInt32(data[1]), Convert.ToInt32(data[2]),
-        //        Convert.ToInt32(time[0]), Convert.ToInt32(time[1]), 
-        //        Convert.ToInt32(time[2].Split("Z")[0]));
-        //    return clientTime;
 
-        //}
+
         private async Task<List<Flight>> GetExternalFlights(string relative_to)
         {
-            ExternalFlight ex = new ExternalFlight(relative_to);
-            List<Flight> flight = await ex.GetRequestAsync();
+            ExternalFlight ex = new ExternalFlight();
+            List<Flight> flight = await ex.GetExternalFlightAsync(relative_to);
             return flight;
         }
 
@@ -134,7 +122,7 @@ namespace FlightControlWeb.Models
         {
             List<Flight> localServer = GetFlightsFromServer(relative_to);
             List<Flight> externalServer = await GetExternalFlights(relative_to);
-            
+
             localServer.AddRange(externalServer);
             return localServer;
         }

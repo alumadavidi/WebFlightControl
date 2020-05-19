@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FlightControlWeb.Controllers
-{//
+{
     [Route("api/[controller]")]
     [ApiController]
     public class FlightPlanController : ControllerBase
@@ -52,12 +52,13 @@ namespace FlightControlWeb.Controllers
 
         // GET: api/FlightPlan/5
         [HttpGet("{id}", Name = "GetFlightPlan")]
-        public ActionResult<FlightPlan> GetFlightPlan(string id)
+        public async Task<ActionResult<FlightPlan>> GetFlightPlan(string id)
         {
-            try
+            FlightPlan f = await flightPlanManager.GetFlightPlanById(id);
+            if (f != null)
             {
-                return Ok(flightPlanManager.GetFlightPlanById(id));
-            } catch
+                return Ok(f);
+            } else
             {
                 return NotFound(id);
             }

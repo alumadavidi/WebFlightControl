@@ -19,9 +19,23 @@ namespace FlightControlWeb.Models
             }
             db.AddFlightPlan(flightPlan, createId());
         }
-        public FlightPlan GetFlightPlanById(string id)
+        public async Task<FlightPlan> GetFlightPlanById(string id)
         {
-            return db.GetFlightPlanById(id);
+            FlightPlan f =  db.GetFlightPlanById(id);
+            if (f == null)
+            {
+                //try to get from extenal server
+                try
+                {
+                    ExternalFlight ex = new ExternalFlight();
+                    f = await ex.GetExternalFlightPlanAsync(id);
+                }
+                catch
+                {
+                    f = null;
+                }
+            }
+            return f;
         }
         public void Test()
         {
