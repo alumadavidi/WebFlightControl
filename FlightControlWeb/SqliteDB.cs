@@ -289,6 +289,20 @@ namespace FlightControlWeb
             return f;
         }
 
+        public ServerFlight GetServerById(string id)
+        {
+            ServerFlight f = null;
+            string stm = "SELECT * FROM ServerTable WHERE id=\'" + id + "\'";
+
+            using var cmd1 = new SQLiteCommand(stm, connection);
+            using SQLiteDataReader rdr = cmd1.ExecuteReader();
+            if (rdr.Read())
+            {
+                f = new ServerFlight(rdr.GetString(0), rdr.GetString(1));
+            }
+            return f;
+        }
+
         public List<Segment> GetSegmentById(string id)
         {
             List<Segment> segments = new List<Segment>();

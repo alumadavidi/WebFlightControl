@@ -53,7 +53,7 @@ namespace FlightControlWeb.Models
 
                     }
                     double newX = (longStart * secondLeft + longEnd * secondsPast) /
-                      (secondsPast + secondLeft)  ;
+                      (secondsPast + secondLeft);
                     double newY = (latStart * secondLeft + latEnd * secondsPast) /
                       (secondsPast + secondLeft);
                   
@@ -66,12 +66,7 @@ namespace FlightControlWeb.Models
             return currentFlight;
         }
 
-        //private string convertString(DateTime serverTime)
-        //{
-        //    return "" + serverTime.Year + "-" + serverTime.Month + "-" + serverTime.Day
-        //        + "T" + serverTime.Hour + ":" + serverTime.Minute + ":" + serverTime.Minute
-        //        + ":" + serverTime.Second + "Z";
-        //}
+    
 
         private List<DateTime> createAllDataTimeClient(List<Segment> segments, DateTime start)
         {

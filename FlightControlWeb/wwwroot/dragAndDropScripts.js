@@ -34,9 +34,10 @@ function delFlight(flight) {
         url: "api/Flights/" + flight.id,
         dataType: 'json',
         success: function (data) {
+            delFlightFromList(flight);
+            deleteMarker(flight)
         }
     });
-    delFlightFromList(flight);
-    deleteMarker(flight)
+    
 }
 
