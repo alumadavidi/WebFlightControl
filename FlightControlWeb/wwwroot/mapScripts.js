@@ -5,6 +5,12 @@ var center = [51.505, -0.09];
 // Create the map
 var map = L.map('map').setView(center, 3);
 
+map.on('click', function (e) {
+    if (clickedMarker != "undefined") {
+        clickedMarker.fire('click');
+        clickedMarker = "undefined";
+    }
+});
 // Set up the OSM layer
 L.tileLayer(
     'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -13,10 +19,16 @@ L.tileLayer(
 }).addTo(map);
 
 var clickedPlain = L.icon({
-    iconUrl: 'https://st2.depositphotos.com/8430356/11390/v/950/depositphotos_113900678-stock-illustration-plain-icon-isolated-on-white.jpg',
+    iconUrl: 'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Ball-Azure.png',
     iconSize: [25, 25], // size of the icon
 });
-var markersMap = new Map()
+var plain = L.icon({
+    iconUrl: 'https://image.flaticon.com/icons/png/512/9/9890.png',
+    iconSize: [25, 25], // size of the icon
+});
+var markersMap = {}
+var clickedMarker = "undefined";
+var polyline;
 function clearMap() {
     console.log("KK");
     map.eachLayer(function (layer) {
@@ -26,19 +38,62 @@ function clearMap() {
     });
 }
 
-function addIconToMap(latitude, longitude, flight) {
-    var plain = L.icon({
-        iconUrl: 'https://image.flaticon.com/icons/png/512/9/9890.png',
-        iconSize: [25, 25], // size of the icon
-    });
+
+function addIconToMap(latitude, longitude, flightId) {
     var marker = L.marker([latitude, longitude], { icon: plain }).addTo(map).on('click', function (e) {
-        this.setIcon(clickedPlain);
+        if (clickedMarker == "undefined") {
+            this.setIcon(clickedPlain);
+            clickedMarker = this;
+            highlightElements(flightId);
+            showFlightDetails(flightId);
+
+        }
+        else if (clickedMarker != marker) {
+            clickedMarker.fire('click');
+            this.setIcon(clickedPlain);
+            clickedMarker = this;
+            highlightElements(flightId);
+            showFlightDetails(flightId);
+
+        } else {
+            this.setIcon(plain);
+            clickedMarker = "undefined";
+            unHighlightElements(flightId);
+            map.removeLayer(polyline);
+            cleanAndHideDataTable();
+            
+        }
     });
-    markersMap.set(flight.flight_id, marker);
+    markersMap[flightId] = marker;
 }
 
-function deleteMarker(flight) {
+function deleteMarker(flightId) {
+    var marker = markersMap[flightId]
+    if (clickedMarker == marker) {
+        marker.fire('click');
+    } 
+    map.removeLayer(marker);
 
-    map.removeLayer(markersMap.get(flight.id));
 }
 
+function rowClick(event, flight) {
+    console.log(event.target);
+    var id = event.target.id;
+    if (id != "trash" && id != "delButton") {
+        markersMap[flight.id].fire('click');
+    }
+}
+
+
+function updateMrkerLatlng(latitude, longitude, flightId){
+    var marker = markersMap[flightId];
+    marker.setLatLng([latitude, longitude]);
+}
+//initial
+function drowSegLines(segments) {
+    var polylinePoints = []
+    segments.forEach(function (segnent) {
+        polylinePoints.push([segnent.latitude, segnent.longitude]);
+    });
+    polyline = L.polyline(polylinePoints).addTo(map);
+}
