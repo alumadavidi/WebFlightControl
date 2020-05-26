@@ -10,18 +10,19 @@ using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
-    public class ExternalFlight
+    public class ExternalFlight : IExternalFlight
     {
-        private SqliteDB db = SqliteDB.Instance;
+        private IDataManager db;
+      //  private SqliteDB db = SqliteDB.Instance;
         private static Dictionary<string, string> flightplanServer;
         //private string url;
         //private List<Flight> flight;
 
 
 
-        public ExternalFlight()
+        public ExternalFlight(IDataManager db)
         {
-                    
+            this.db = db;  
            
         }
         //"api/Flights?relative_to="+time

@@ -14,10 +14,13 @@ namespace FlightControlWeb.Controllers
     [ApiController]
     public class FlightsController : ControllerBase
     {
-        //private SqliteDB db = SqliteDB.Instance;
-        private FlightPlanManager flightPlanManager = new FlightPlanManager();
-        private FlightManager flightManager = new FlightManager();
-        private SqliteDB db = SqliteDB.Instance;
+        private IFlightManager flightManager;
+        public FlightsController(IFlightManager flight)
+        {
+            this.flightManager = flight;
+        }
+        
+       // private SqliteDB db = SqliteDB.Instance;
         Flight f = new Flight("1234567", 33.240, 31.12, 216, "SwissAir1", "2020-12-26T23:56:21Z1"
             , false);
         Flight f1 = new Flight("1234568", 33.241, 31.12, 2165, "SwissAir2", "2020-12-26T23:56:21Z2"
@@ -59,7 +62,7 @@ namespace FlightControlWeb.Controllers
                 return Ok(flights);
             } else
             {
-                return NotFound(relative_to);
+                return flights = new List<Flight>();
             }
 
         }

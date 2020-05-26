@@ -7,7 +7,7 @@ function updateTable() {
         url: flightsUrl,
         dataType: 'json',
         data: {
-            relative_to: "2020-12-26T23:56:21Z5"
+            relative_to: "2020-12-26T23:56:21Z&sync_all"
         }, success: function (data) {
             data.forEach(function (flight) {
                 flightsFromServer.push(flight.flight_Id);
@@ -25,6 +25,7 @@ function updateTable() {
                     delFlightFromView(flightId);
                 }
             });
+            console.log("table update");
             flightsFromServer = [];
         }
     });
@@ -34,7 +35,7 @@ var setTimer = setInterval(updateTable, 1000);
 function addFlightToView(flight) {
     
     if (flight.is_external) {
-        $("#exflightstbl").append("<tr id=" + '"' + flight.flight_Id + '"' + 'onclick="rowClick(' + flight.flight_Id + ')"' + "><td>" + flight.flight_Id + "</td>" + "<td>" +
+        $("#exflightstbl").append("<tr id=" + '"' + flight.flight_Id + '"' + 'onclick="rowClick(event, '  + flight.flight_Id + ')"' + "><td>" + flight.flight_Id + "</td>" + "<td>" +
             flight.company_name + "</td></tr>");
     } else {
         $("#myflightstbl").append("<tr id=" + '"' + flight.flight_Id + '"' + 'onclick="rowClick(event, ' + flight.flight_Id + ')"' + "><td>" + flight.flight_Id + "</td>" + "<td>" +

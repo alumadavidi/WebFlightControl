@@ -8,26 +8,26 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace FlightControlWeb
+namespace FlightControlWeb.Models
 {
-    public class SqliteDB
+    public class SqliteDB : IDataManager
     {
-        private static SqliteDB instance;
+       // private static SqliteDB instance;
         private SQLiteConnection connection;
         //private DataSet datatSet;
         //private SqlConnection connection;
-        public static SqliteDB Instance
-        {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new SqliteDB();
-                }
-                return instance;
-            }
-        }
-        private SqliteDB()
+        //public static SqliteDB Instance
+        //{
+        //    get
+        //    {
+        //        if (instance == null)
+        //        {
+        //            instance = new SqliteDB();
+        //        }
+        //        return instance;
+        //    }
+        //}
+        public SqliteDB()
         {
             string cs = "DataSource=FlightControl.db;";
             if (!File.Exists("FlightControl.db"))
@@ -303,7 +303,7 @@ namespace FlightControlWeb
             return f;
         }
 
-        public List<Segment> GetSegmentById(string id)
+        private List<Segment> GetSegmentById(string id)
         {
             List<Segment> segments = new List<Segment>();
 

@@ -13,7 +13,11 @@ namespace FlightControlWeb.Controllers
     [ApiController]
     public class ServersController : ControllerBase
     {
-        private ServerManager serverManager = new ServerManager();
+        private IServerManager serverManager;
+        public ServersController(IServerManager s)
+        {
+            this.serverManager = s;
+        }
         // GET: api/Server
         [HttpGet(Name = "GetAllServer")]
         public ActionResult<List<ServerFlight>> GetAllServer()

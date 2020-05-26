@@ -5,10 +5,14 @@ using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
-    public class ServerManager
+    public class ServerManager : IServerManager
     {
-        private SqliteDB db = SqliteDB.Instance;
-
+        //private SqliteDB db = SqliteDB.Instance;
+        private IDataManager db;
+        public ServerManager(IDataManager db)
+        {
+            this.db = db;
+        }
         public void AddServer(ServerFlight s)
         {
             if (s.ServerId == null || s.ServerUrl == null)

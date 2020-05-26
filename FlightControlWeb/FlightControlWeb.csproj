@@ -5,6 +5,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="scripts\**" />
+    <Compile Remove="views\**" />
+    <Content Remove="scripts\**" />
+    <Content Remove="views\**" />
+    <EmbeddedResource Remove="scripts\**" />
+    <EmbeddedResource Remove="views\**" />
+    <None Remove="scripts\**" />
+    <None Remove="views\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Dapper" Version="2.0.35" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.7" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
@@ -13,11 +24,6 @@
     <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
     <PackageReference Include="System.Data.SQLite.Core" Version="1.0.112.2" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="scripts\" />
-    <Folder Include="views\" />
   </ItemGroup>
 
   <ItemGroup>

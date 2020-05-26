@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using FlightControlWeb.Controllers;
+using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -27,6 +29,12 @@ namespace FlightControlWeb
         {
             services.AddMvc().AddNewtonsoftJson();
             services.AddControllers();
+            services.AddSingleton(typeof(IDataManager), typeof(SqliteDB));
+            services.AddSingleton(typeof(IExternalFlight), typeof(ExternalFlight));
+            services.AddSingleton(typeof(IFlightManager), typeof(FlightManager));
+            services.AddSingleton(typeof(IFlightPlanManager), typeof(FlightPlanManager));
+            services.AddSingleton(typeof(IServerManager), typeof(ServerManager));
+
             //services.AddMvcCore().AddJsonOptions()
             //services.AddMvcCore().AddNewtonsoftJson();
         }

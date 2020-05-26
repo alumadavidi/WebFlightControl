@@ -15,8 +15,13 @@ namespace FlightControlWeb.Controllers
     [ApiController]
     public class FlightPlanController : ControllerBase
     {
-       // SqliteDB se = SqliteDB.Instance;
-        private FlightManager flight = new FlightManager();
+        private IFlightPlanManager flightPlanManager;
+        public FlightPlanController(IFlightPlanManager flight)
+        {
+            this.flightPlanManager = flight;
+        }
+        // SqliteDB se = SqliteDB.Instance;
+       // private FlightManager flight = new FlightManager();
         private static List<Segment> s = new List<Segment>()
         {
             new Segment(33.234, 31.18,650)
@@ -36,7 +41,7 @@ namespace FlightControlWeb.Controllers
             new Segment(5, 6,650),
              new Segment(8, 9,650)
         };
-        private FlightPlanManager flightPlanManager = new FlightPlanManager();
+      //  private FlightPlanManager flightPlanManager = new FlightPlanManager();
         private static FlightPlan f = new FlightPlan(216, "swir1",
             new InitialLocation(33.244, 31.12, "2020-05-11T12:40:21Z"),
             s);

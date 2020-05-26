@@ -1,4 +1,5 @@
-﻿using System;
+﻿using FlightControlWeb.Controllers;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -6,9 +7,16 @@ using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
-    public class FlightManager
+    public class FlightManager : IFlightManager
     {
-        private SqliteDB db = SqliteDB.Instance;
+        private IDataManager db;
+        private IExternalFlight externalFlight;
+        public FlightManager(IDataManager db, IExternalFlight externalFlight)
+        {
+            this.db = db;
+            this.externalFlight = externalFlight;
+        }
+        //private SqliteDB db = SqliteDB.Instance;
 
         public List<Flight> GetFlightsFromServer(string relative_to)
         {
@@ -108,8 +116,8 @@ namespace FlightControlWeb.Models
 
         private async Task<List<Flight>> GetExternalFlights(string relative_to)
         {
-            ExternalFlight ex = new ExternalFlight();
-            List<Flight> flight = await ex.GetExternalFlightAsync(relative_to);
+           // ExternalFlight ex = new ExternalFlight();
+            List<Flight> flight = await externalFlight.GetExternalFlightAsync(relative_to);
             return flight;
         }
 
