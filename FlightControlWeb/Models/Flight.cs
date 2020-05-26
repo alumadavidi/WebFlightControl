@@ -8,108 +8,47 @@ namespace FlightControlWeb.Models
 {
     public class Flight
     {
-        private string flightId;
-        private double longitude;
-        private double latitude;
-        private int passengers;
-        private string companyName;
-        private string dateTime;
-        private bool is_external;
         [JsonConstructor]
         public Flight(string flightId, double longitude, double latitude, int passengers,
             string companyName, string dateTime, bool isExternal)
         {
-            this.flightId = flightId;
-            this.longitude = longitude;
-            this.latitude = latitude;
-            this.passengers = passengers;
-            this.companyName = companyName;
-            this.dateTime = dateTime;
-            this.is_external = isExternal;
+            Flight_Id = flightId;
+            if(longitude > 180)
+            {
+                longitude = 180;
+            }
+            if(longitude < -180)
+            {
+                longitude = -180;
+            }
+            Longitude = longitude;
+            if (latitude > 90)
+            {
+                latitude = 90;
+            }
+            if (latitude < -90)
+            {
+                latitude = -90;
+            }
+            Latitude = latitude;
+            Passengers = passengers;
+            CompanyName = companyName;
+            DateTime = dateTime;
+            IsExternal = isExternal;
         }
         [JsonProperty("flight_Id")]
-        public string Flight_Id
-        {
-            get
-            {
-                return flightId;
-            }
-            set
-            {
-                flightId = value;
-            }
-        }
+        public string Flight_Id { get; set; }
         [JsonProperty("longitude")]
-        public double Longitude
-        {
-            get
-            {
-                return longitude;
-            }
-            set
-            {
-                longitude = value;
-            }
-        }
+        public double Longitude { get; set; }
         [JsonProperty("latitude")]
-        public double Latitude
-        {
-            get
-            {
-                return latitude;
-            }
-            set
-            {
-                latitude = value;
-            }
-        }
+        public double Latitude { get; set; }
         [JsonProperty("passengers")]
-        public int Passengers
-        {
-            get
-            {
-                return passengers;
-            }
-            set
-            {
-                passengers = value;
-            }
-        }
+        public int Passengers { get; set; }
         [JsonProperty("company_name")]
-        public string CompanyName
-        {
-            get
-            {
-                return companyName;
-            }
-            set
-            {
-                companyName = value;
-            }
-        }
+        public string CompanyName { get; set; }
         [JsonProperty("date_time")]
-        public string DateTime
-        {
-            get
-            {
-                return dateTime;
-            }
-            set
-            {
-                dateTime = value;
-            }
-        }
+        public string DateTime { get; set; }
         [JsonProperty("is_external")]
-        public bool IsExternal
-        {
-            get
-            {
-                return is_external;
-            }
-            set
-            {
-                is_external = value;
-            }
-        }
+        public bool IsExternal { get; set; }
     }
 }

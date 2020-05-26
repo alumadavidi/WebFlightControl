@@ -1,11 +1,11 @@
 ﻿using FlightControlWeb.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
+
 
 namespace UnitTestFlightWeb.classTest
 {
-    class StubDb : IDataManager
+    public class ExternalDb : IDataManager
     {
         public void AddFlightPlan(FlightPlan f, string id)
         {

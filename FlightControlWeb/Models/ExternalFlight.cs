@@ -25,37 +25,6 @@ namespace FlightControlWeb.Models
             this.db = db;  
            
         }
-        //"api/Flights?relative_to="+time
-        public async Task<List<Flight>> GetRequestAsync(string url)
-        {
-            List<Flight> flight = new List<Flight>();
-            List<ServerFlight> servers = db.GetServers();
-            foreach (ServerFlight s in servers)
-            {
-                //HttpClient httpClient = new HttpClient();
-                //httpClient.BaseAddress = new Uri(s.ServerUrl);
-                ////add header fields for jyson
-                //httpClient.DefaultRequestHeaders.Add("User-Agent", "C# console program");
-                //httpClient.DefaultRequestHeaders.Accept.Add(
-                //        new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpClient httpClient = BuildHttpClient(s);
-                try
-                { 
-                    HttpResponseMessage response = await httpClient.GetAsync(url);
-                    response.EnsureSuccessStatusCode();
-                    var resp = await response.Content.ReadAsStringAsync();
-
-                    List<Flight> newFlight = JsonConvert.DeserializeObject<List<Flight>>(resp);
-                    flight.AddRange(newFlight);
-                } catch(Exception) {
-                    Console.WriteLine("failed in external filght get response");
-                }
-                
-            }
-            changeStatusFlight(flight);
-            return flight;
-            
-        }
 
         public async Task<FlightPlan> GetExternalFlightPlanAsync(string id)
         {
@@ -77,7 +46,7 @@ namespace FlightControlWeb.Models
                 }
                 catch (Exception)
                 {
-                    Console.WriteLine("failed in external filghtPlan by id get response");
+                    //Console.WriteLine("failed in external filghtPlan by id get response");
                 }
             }
             catch //no server has the flight plan
@@ -109,7 +78,7 @@ namespace FlightControlWeb.Models
                   Console.WriteLine("failed in external filght get response");
                 }
             }
-            changeStatusFlight(flight);
+            ChangeStatusFlight(flight);
             return flight;
         }
 
@@ -121,8 +90,6 @@ namespace FlightControlWeb.Models
             }
         }
 
-        public Dictionary<string, string> MapFlightPlanServer{get; set;}
-
         private async Task<string> ResponceAsync(HttpClient httpClient, string url)
         {
             HttpResponseMessage response = await httpClient.GetAsync(url);
@@ -130,7 +97,7 @@ namespace FlightControlWeb.Models
             string resp = await response.Content.ReadAsStringAsync();
             return resp;
         }
-        private void changeStatusFlight(List<Flight> flight)
+        private void ChangeStatusFlight(List<Flight> flight)
         {
            foreach(Flight f in flight){
                 f.IsExternal = true;
@@ -140,6 +107,7 @@ namespace FlightControlWeb.Models
         private HttpClient BuildHttpClient(ServerFlight s)
         {
             HttpClient httpClient = new HttpClient();
+            
             httpClient.BaseAddress = new Uri(s.ServerUrl);
             //add header fields for jyson
             httpClient.DefaultRequestHeaders.Add("User-Agent", "C# console program");

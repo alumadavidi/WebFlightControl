@@ -7,7 +7,7 @@ function updateTable() {
         url: flightsUrl,
         dataType: 'json',
         data: {
-            relative_to: "2020-12-26T23:56:21Z&sync_all"
+            relative_to: "2020-12-26T22:00:21Z&sync_all"
         }, success: function (data) {
             data.forEach(function (flight) {
                 flightsFromServer.push(flight.flight_Id);

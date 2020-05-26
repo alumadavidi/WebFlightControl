@@ -1,59 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Data.SQLite;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 
 namespace FlightControlWeb.Models
 {
     public class InitialLocation
     {
-        private double longitude;
-        private double latitude;
-        private string dateTime;
         public InitialLocation(double longi, double lat, string data)
         {
-            longitude = longi;
-            latitude = lat;
-            dateTime = data;
+            Longitude = longi;
+            Latitude = lat;
+            DateTime = data;
         }
         [JsonProperty("longitude")]
-        public double Longitude
-        {
-            set
-            {
-                longitude = value;
-            }
-            get
-            {
-                return longitude;
-            }
-        }
+        public double Longitude { set; get; }
         [JsonProperty("latitude")]
-        public double Latitude
-        {
-            set
-            {
-                latitude = value;
-            }
-            get
-            {
-                return latitude;
-            }
-        }
+        public double Latitude { set; get; }
         [JsonProperty("date_time")]
-        public string DateTime
-        {
-            set
-            {
-                dateTime = value;
-            }
-            get
-            {
-                return dateTime;
-            }
-        }
+        public string DateTime { set; get; }
 
         public bool IsNull()
         {

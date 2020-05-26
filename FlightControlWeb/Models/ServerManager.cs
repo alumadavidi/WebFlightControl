@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
     public class ServerManager : IServerManager
     {
         //private SqliteDB db = SqliteDB.Instance;
-        private IDataManager db;
+        private readonly IDataManager db;
         public ServerManager(IDataManager db)
         {
             this.db = db;
