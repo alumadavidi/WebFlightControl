@@ -23,5 +23,10 @@ namespace UnitTestFlightWeb.classTest
             FlightPlan f = data.GetFlightPlanById(id);
             return f;
         }
+
+        public void RemoveServerFromDic(string id)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

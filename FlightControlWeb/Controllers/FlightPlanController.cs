@@ -9,7 +9,7 @@ namespace FlightControlWeb.Controllers
     [ApiController]
     public class FlightPlanController : ControllerBase
     {
-        private IFlightPlanManager flightPlanManager;
+        private readonly IFlightPlanManager flightPlanManager;
         public FlightPlanController(IFlightPlanManager flight)
         {
             this.flightPlanManager = flight;
@@ -20,12 +20,14 @@ namespace FlightControlWeb.Controllers
         [Consumes("application/json")]
         public async Task<ActionResult<FlightPlan>> GetFlightPlan(string id)
         {
+            //get flight by id
             FlightPlan f = await flightPlanManager.GetFlightPlanById(id);
             if (f != null)
             {
                 return Ok(f);
             } else
             {
+                //the id not found
                 return NotFound(id);
             }
         }
@@ -37,6 +39,7 @@ namespace FlightControlWeb.Controllers
         {
             try
             {
+                //add new flight plan to DB
                 flightPlanManager.AddNewFlightPlan(f);
                 return Created("create new FlightPlan", f);
             } 

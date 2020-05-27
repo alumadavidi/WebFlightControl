@@ -13,6 +13,7 @@ namespace FlightControlWeb.Models
             string companyName, string dateTime, bool isExternal)
         {
             Flight_Id = flightId;
+            //convert 
             if(longitude > 180)
             {
                 longitude = 180;

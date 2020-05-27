@@ -35,7 +35,7 @@ namespace TestFlightManager
 
 
             extenalTestMock.Setup(x => x.GetExternalFlightPlanAsync(It.IsAny<String>()))
-                .Returns(GetOriginalFlightPlan());
+                .Returns(GetFlightPlan());
 
             //class to check
             FlightPlanManager flightManager = new FlightPlanManager(inner, extenalTestMock.Object);
@@ -53,6 +53,19 @@ namespace TestFlightManager
         }
 
         private async Task<FlightPlan> GetOriginalFlightPlan()
+        {
+            List<Segment> s = new List<Segment>()
+            {
+                new Segment(33.234, 31.18,650)
+            };
+            FlightPlan f = new FlightPlan(216, "swir1",
+            new InitialLocation(33.244, 31.12, "2020-05-11T12:40:21Z"),
+            s);
+
+            return f;
+        }
+
+        private async Task<FlightPlan> GetFlightPlan()
         {
             List<Segment> s = new List<Segment>()
             {

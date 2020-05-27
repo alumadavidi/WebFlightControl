@@ -19,6 +19,7 @@ namespace FlightControlWeb.Models
 
         public bool IsNull()
         {
+            //check validation
            if(Longitude == null || Latitude == null || DateTime == null)
             {
                 return true;

@@ -7,7 +7,6 @@ namespace FlightControlWeb.Models
 {
     public class FlightPlanManager : IFlightPlanManager
     {
-        //private SqliteDB db = SqliteDB.Instance;
         private readonly IDataManager db;
         private readonly IExternalFlight externalFlight;
         public FlightPlanManager(IDataManager db, IExternalFlight externalFlight)
@@ -18,6 +17,7 @@ namespace FlightControlWeb.Models
 
         public void AddNewFlightPlan(FlightPlan flightPlan)
         {
+            //add flight plan to DB
             if (flightPlan == null || flightPlan.IsNull() ||
                     !TimeFunc.ValidStringDate(flightPlan.InitialLocation.DateTime))
             {
@@ -27,6 +27,7 @@ namespace FlightControlWeb.Models
         }
         public async Task<FlightPlan> GetFlightPlanById(string id)
         {
+            //get flight plan by id from DB
             FlightPlan f =  db.GetFlightPlanById(id);
             if (f == null)
             {
@@ -46,11 +47,13 @@ namespace FlightControlWeb.Models
        
         private string CreateId()
         {
+            //create random id to flight plan
             string id = "";
             string randomChar;
             Random rnd = new Random();
             for (int i = 0; i < 8; i++)
             {
+                //2 char and 6 number
                 if (i < 2)
                 {
                     randomChar = ""+(char)rnd.Next('A', 'Z');

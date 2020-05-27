@@ -18,6 +18,7 @@ namespace FlightControlWeb.Controllers
         [Consumes("application/json")]
         public ActionResult<List<ServerFlight>> GetAllServer()
         {
+            //get all the servers from DB
             List<ServerFlight> server = serverManager.GetServerFlights();
             if (server.Count != 0)
             {
@@ -25,6 +26,7 @@ namespace FlightControlWeb.Controllers
             }
             else
             {
+                
                 return NotFound();
             }
         }
@@ -38,6 +40,7 @@ namespace FlightControlWeb.Controllers
         {
             try 
             {
+                //add new server to DB
                 serverManager.AddServer(s);
                 //created
                 return Created("create new serverFlight", s);
@@ -59,6 +62,7 @@ namespace FlightControlWeb.Controllers
         {
             try
             {
+                //delete server from DB
                 serverManager.deleteServer(id);
                 return Ok();
             } catch

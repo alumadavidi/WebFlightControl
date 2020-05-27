@@ -69,8 +69,12 @@ namespace FlightControlWeb.Models
             cmd.CommandText = "DROP TABLE IF EXISTS ServerTable";
             int s = cmd.ExecuteNonQuery();
             //add column
-            cmd.CommandText = @"CREATE TABLE ServerTable(id TEXT PRIMARY KEY,
-                    url TEXT)";
+           
+            cmd.CommandText = @"CREATE TABLE ServerTable(
+                id TEXT NOT NULL,
+                url TEXT NOT NULL,
+                PRIMARY KEY(id, url)
+                );";
             s = cmd.ExecuteNonQuery();
         }
 
@@ -112,6 +116,7 @@ namespace FlightControlWeb.Models
 
         private void AddSegmentOfFlight(List<Segment> segments, string id)
         {
+            //add segments of flight plan to DB
             foreach (Segment s in segments)
             {
                 using var cmd = new SQLiteCommand(connection);
@@ -132,6 +137,7 @@ namespace FlightControlWeb.Models
 
         public List<ServerFlight> GetServers()
         {
+            //get all server fron DB
             List<ServerFlight> serverFlights = new List<ServerFlight>();
             string stm = "SELECT * FROM ServerTable";
 
@@ -148,6 +154,7 @@ namespace FlightControlWeb.Models
 
         public List<FlightPlanId> GetFlightPlans()
         {
+            //get all flight plan from DB
             List<FlightPlanId> flights = new List<FlightPlanId>();
             string stm = "SELECT * FROM FlightPlanTable";
 
@@ -168,6 +175,7 @@ namespace FlightControlWeb.Models
         //throw exception if not found
         public FlightPlan GetFlightPlanById(string id)
         {
+            //get flight plan from DB by specific id
             FlightPlan f = null;
             string stm = "SELECT * FROM FlightPlanTable WHERE id=\'" + id + "\'";
 
@@ -187,6 +195,7 @@ namespace FlightControlWeb.Models
 
         public ServerFlight GetServerById(string id)
         {
+            //get server from DB by specific id
             ServerFlight f = null;
             string stm = "SELECT * FROM ServerTable WHERE id=\'" + id + "\'";
 
@@ -201,6 +210,7 @@ namespace FlightControlWeb.Models
 
         private List<Segment> GetSegmentById(string id)
         {
+            //get segments from DB by specific id
             List<Segment> segments = new List<Segment>();
 
             string stm = "SELECT * FROM SegmentTable WHERE id=\'"+id+"\'";
@@ -219,6 +229,7 @@ namespace FlightControlWeb.Models
 
         public void RemoveFlightPlan(string id)
         {
+            //remove flight plan from DB by specific id
             string stm = "DELETE FROM FlightPlanTable WHERE id=\'" + id+"\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
@@ -235,6 +246,7 @@ namespace FlightControlWeb.Models
 
         private void RemoveSegments(string id)
         {
+            //remove segments from DB by specific id
             string stm = "DELETE FROM SegmentTable WHERE id=\'" + id+"\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
@@ -248,6 +260,7 @@ namespace FlightControlWeb.Models
 
         public void RemoveServer(string id)
         {
+            //remove server from DB by specific id
             string stm = "DELETE FROM ServerTable WHERE id=\'" + id + "\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);

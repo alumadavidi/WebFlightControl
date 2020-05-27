@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading;
 using System.Threading.Tasks;
 using FlightControlWeb.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -22,15 +24,16 @@ namespace FlightControlWeb.Controllers
         public async Task<ActionResult<List<Flight>>> GetAllFlight(
             [FromQuery(Name = "relative_to")] string relative_to)
         {
-            
             List<Flight> flights = new List<Flight>();
             string query = Request.QueryString.Value;
             if (query.Contains("sync_all"))
             {
+                //get all filght - both form inner server and external server
                 flights = await flightManager.GetAllFlights(relative_to);
             }
             else
             {
+                //get flight just from inner server
                 flights = flightManager.GetFlightsFromServer(relative_to);
             }
             if (flights.Count != 0)
@@ -51,6 +54,7 @@ namespace FlightControlWeb.Controllers
         {
             try
             {
+                //delete flight plan
                 flightManager.DeleteFlight(id);
                 return Ok();
             } catch

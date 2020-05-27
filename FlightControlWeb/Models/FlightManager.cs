@@ -17,6 +17,7 @@ namespace FlightControlWeb.Models
 
         public List<Flight> GetFlightsFromServer(string relative_to)
         {
+            //interuplation of flight place
             List<Flight> currentFlight = new List<Flight>();
             List<FlightPlanId> flightPlan = db.GetFlightPlans();
 
@@ -28,19 +29,21 @@ namespace FlightControlWeb.Models
                 List<Segment> segments = f.Segments;
                 List<DateTime> dateTimes = CreateAllDataTimeClient(segments,
                     TimeFunc.CreateDateTimeFromString(f.InitialLocation.DateTime));
-                //DateTime request, DateTime start, DateTime end
+               //if flight is now
                 if (FlightIsNow(requestTime, dateTimes[0], dateTimes[dateTimes.Count - 1]))
                 {
+                    //get the new place of flight
                     UpdateFlight(dateTimes, requestTime, fid, segments, currentFlight);
                 }
             }
             return currentFlight;
         }
 
-        private void UpdateFlight(List<DateTime> dateTimes, DateTime requestTime, FlightPlanId fid,
-            List<Segment> segments, List<Flight> currentFlight)
+        private void UpdateFlight(List<DateTime> dateTimes, DateTime requestTime, 
+            FlightPlanId fid, List<Segment> segments, List<Flight> currentFlight)
         {
             FlightPlan f = fid.FlightP;
+            //find current segment of flight
             int numSegment = FindSpecificSegment(dateTimes, requestTime);
 
             double longStart, longEnd, latStart, latEnd;
@@ -50,7 +53,7 @@ namespace FlightControlWeb.Models
             double secondsPast = (requestTime - startSegment).TotalSeconds;
             //total seconds that left in segment
             double secondLeft = (endSegment - requestTime).TotalSeconds;
-
+            //calculate current place
             if (numSegment == 0)
             {
 
@@ -81,6 +84,7 @@ namespace FlightControlWeb.Models
 
         private List<DateTime> CreateAllDataTimeClient(List<Segment> segments, DateTime start)
         {
+            //create time of segments 
             List<DateTime> dateTime = new List<DateTime>();
             dateTime.Add(start);
             DateTime t = start;
@@ -95,6 +99,7 @@ namespace FlightControlWeb.Models
         }
         private int FindSpecificSegment(List<DateTime> dateTimes, DateTime client)
         {
+            //find the current segment of flight
             int i;
             for(i = 1; i < dateTimes.Count; i++)
             {
@@ -119,13 +124,15 @@ namespace FlightControlWeb.Models
 
         private async Task<List<Flight>> GetExternalFlights(string relative_to)
         {
-           // ExternalFlight ex = new ExternalFlight();
-            List<Flight> flight = await externalFlight.GetExternalFlightAsync(relative_to);
+            //get flight from external server
+            List<Flight> flight = await externalFlight
+                .GetExternalFlightAsync(relative_to);
             return flight;
         }
 
         public async Task<List<Flight>> GetAllFlights(string relative_to)
         {
+            //get all flight - both external and inner server
             List<Flight> localServer = GetFlightsFromServer(relative_to);
             List<Flight> externalServer = await GetExternalFlights(relative_to);
 
@@ -135,6 +142,7 @@ namespace FlightControlWeb.Models
 
         public void DeleteFlight(string id)
         {
+            //delete flight from DB
             db.RemoveFlightPlan(id);
         }
     }

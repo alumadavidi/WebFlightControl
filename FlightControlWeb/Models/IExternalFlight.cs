@@ -7,5 +7,6 @@ namespace FlightControlWeb.Models
     {
         public Task<FlightPlan> GetExternalFlightPlanAsync(string id);
         public Task<List<Flight>> GetExternalFlightAsync(string time);
+        public void RemoveServerFromDic(string id);
     }
 }
