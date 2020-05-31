@@ -1,6 +1,6 @@
 ﻿function allowDrop(event) {
     event.preventDefault();
-    var img = document.getElementById("draganddropimage");
+    let img = document.getElementById("draganddropimage");
     if (window.getComputedStyle(img).visibility === "hidden") {
         img.style.visibility = "visible";
     }
@@ -12,21 +12,27 @@ function dropInTarget(event) {
     event.preventDefault();
     $("#draganddropimage").hide();
     $("#flightlist").show();
-    //if (event.dataTransfer.items[0] == 'file') {
-        var file = event.dataTransfer.files[0];
-        var xhr = new XMLHttpRequest();
-    var flightUrl = "api/FlightPlan"
-    //check
-        xhr.open("POST", flightUrl, true);
-        xhr.setRequestHeader("Content-Type", "application/json");
-        xhr.send(file);
-    //}
+    let file = event.dataTransfer.files[0];
+    checkFileValidness(file);
+    let xhr = new XMLHttpRequest();
+    let flightUrl = "api/FlightPlan"
+    xhr.open("POST", flightUrl, true);
+    xhr.setRequestHeader("Content-Type", "application/json"); 
+    xhr.send(file);
+    xhr.onload = function () {
+        if (xhr.status == 400) {
+            sendAlert("something wrong with the file, check it");
+
+        }
+    };
 }
 function drop(event) {
     event.preventDefault();
     $("#draganddropimage").hide();
     $("#flightlist").show();
 }
+
+
 
 
 

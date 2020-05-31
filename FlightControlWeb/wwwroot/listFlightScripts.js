@@ -1,21 +1,28 @@
-﻿var flightListInTable = [];
+﻿let flightListInTable = [];
 function updateTable() {
-    var flightsFromServer = [];
-    var flightsUrl = "api/Flights";
+    let currentdate = new Date();
+    let curDate = currentdate.getFullYear() + "-"
+        + (currentdate.getMonth() + 1) + "-"
+        + currentdate.getDate() + "T"
+        + currentdate.getHours() + ":"
+        + currentdate.getMinutes() + ":"
+        + currentdate.getSeconds() + "Z";
+    let flightsFromServer = [];
+    let flightsUrl = "api/Flights";
     $.ajax({
         type: "GET",
         url: flightsUrl,
         dataType: 'json',
         data: {
-            relative_to: "2020-12-26T23:56:21Z&sync_all"
+            relative_to: curDate + "&sync_all"
         }, success: function (data) {
             data.forEach(function (flight) {
                 flightsFromServer.push(flight.flight_Id);
                 if (flightListInTable.indexOf(flight.flight_Id) < 0) {
                     addFlightToView(flight);
                 } else {
-                    var latitude = flight.latitude;
-                    var longitude = flight.longitude;
+                    let latitude = flight.latitude;
+                    let longitude = flight.longitude;
                     updateMrkerLatlng(latitude, longitude, flight.flight_Id);
                     
                 }
@@ -25,12 +32,11 @@ function updateTable() {
                     delFlightFromView(flightId);
                 }
             });
-            console.log("table update");
             flightsFromServer = [];
         }
     });
 }
-var setTimer = setInterval(updateTable, 1000);
+let setTimer = setInterval(updateTable, 1000);
 
 function addFlightToView(flight) {
     
@@ -43,24 +49,24 @@ function addFlightToView(flight) {
             '<button id="delButton" onclick="delFlight(event,' + flight.flight_Id + ')"><i id="trash" class="fa fa-trash"></i></button>'
             + "</td></tr>");
     }
-    var latitude = flight.latitude;
-    var longitude = flight.longitude;
+    let latitude = flight.latitude;
+    let longitude = flight.longitude;
     addIconToMap(latitude, longitude, flight.flight_Id);
     flightListInTable.push(flight.flight_Id);
 }
 
 function delFlightFromList(flightId) {
     flightListInTable.splice(flightListInTable.indexOf(flightId), 1);
-    var element = document.getElementById(flightId);
+    let element = document.getElementById(flightId);
     element.parentNode.removeChild(element);
 }
 
 function highlightElements(flight) {
-    var row = document.getElementById(flight)
+    let row = document.getElementById(flight)
     row.style.border = "medium solid #000";
 }
 function unHighlightElements(flight) {
-    var row = document.getElementById(flight)
+    let row = document.getElementById(flight)
     row.style.border = "none";
 }
 
@@ -72,8 +78,10 @@ function delFlight(event, flight) {
         success: function (data) {
             delFlightFromView(flight.id);
             event.cancelBubble = true;
-
-        }
+        }, 
+        error: function () {
+            sendAlert("Oops..this flight don't exist, can't be deleted");
+        } 
     });
 }
 function delFlightFromView(flightId) {
