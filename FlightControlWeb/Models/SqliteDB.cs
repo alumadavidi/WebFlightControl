@@ -1,38 +1,21 @@
-﻿using FlightControlWeb.Models;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Data;
 using System.Data.SQLite;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
     public class SqliteDB : IDataManager
     {
-       // private static SqliteDB instance;
-        private SQLiteConnection connection;
-        //private DataSet datatSet;
-        //private SqlConnection connection;
-        //public static SqliteDB Instance
-        //{
-        //    get
-        //    {
-        //        if (instance == null)
-        //        {
-        //            instance = new SqliteDB();
-        //        }
-        //        return instance;
-        //    }
-        //}
+        private readonly SQLiteConnection connection;
+
         public SqliteDB()
         {
             string cs = "DataSource=FlightControl.db;";
             if (!File.Exists("FlightControl.db"))
             {
-                
+
                 //open connection
                 connection = new SQLiteConnection(cs);
                 connection.Open();
@@ -42,70 +25,17 @@ namespace FlightControlWeb.Models
                     BuildFlightPlanTable();
                     BuildSegmentTable();
                     BuildServerTable();
-                } catch
+                }
+                catch
                 {
                     Console.WriteLine("FAILED IN BUILD DB");
                 }
-            } else
+            }
+            else
             {
                 connection = new SQLiteConnection(cs);
                 connection.Open();
             }
-
-            ////create DB
-            //string cs = "DataSource=FlightControl.db;";
-            ////open connection
-            //connection = new SQLiteConnection(cs);
-            //connection.Open();
-            
-            //BuildFlightPlanTable();
-            //BuildSegmentTable();
-            //BuildServerTable();
-
-
-            //AddServer(new ServerFlight("12345", "www.ghh"));
-            //List<Segment> s2 = new List<Segment>()
-            // {
-            //    new Segment(5, 6,650),
-            //    new Segment(8, 9,650)
-            // };
-            //FlightPlanManager flightPlanManager = new FlightPlanManager();
-            //FlightPlan f = new FlightPlan("123450", 216, "swir1",
-            //    new InitialLocation(33.244, 31.12, "2020-12-26T23:56:21Z5"),
-            //    s2);
-            //FlightPlan f1 = new FlightPlan("123451", 216, "swir1",
-            //   new InitialLocation(33.244, 31.122, "2020-12-26T23:56:21Z8"),
-            //   s2);
-            //AddFlightPlan(f);
-            //AddFlightPlan(f1);
-            //GetServers();
-            //GetFlightPlans();
-            //GetFlightPlanById("123451");
-            //RemoveFlightPlan("123450");
-
-
-        //using var cmd = new SQLiteCommand(connection);
-
-            //cmd.CommandText = "DROP TABLE IF EXISTS cars";
-            //cmd.ExecuteNonQuery();
-
-            //cmd.CommandText = @"CREATE TABLE cars(id INTEGER PRIMARY KEY,
-            //        name TEXT, price INT)";
-            //cmd.ExecuteNonQuery();
-
-            //cmd.CommandText = "INSERT INTO cars(name, price) VALUES('Skoda',9000)";
-            //cmd.ExecuteNonQuery();
-
-            //string stm = "SELECT * FROM cars LIMIT 5";
-
-            //using var cmd1 = new SQLiteCommand(stm, connection);
-            //using SQLiteDataReader rdr = cmd1.ExecuteReader();
-
-            //while (rdr.Read())
-            //{
-            //    Console.WriteLine($"{rdr.GetInt32(0)} {rdr.GetString(1)} {rdr.GetInt32(2)}");
-            //}
-
         }
         private void BuildFlightPlanTable()
         {
@@ -139,8 +69,12 @@ namespace FlightControlWeb.Models
             cmd.CommandText = "DROP TABLE IF EXISTS ServerTable";
             int s = cmd.ExecuteNonQuery();
             //add column
-            cmd.CommandText = @"CREATE TABLE ServerTable(id TEXT PRIMARY KEY,
-                    url TEXT)";
+           
+            cmd.CommandText = @"CREATE TABLE ServerTable(
+                id TEXT NOT NULL,
+                url TEXT NOT NULL,
+                PRIMARY KEY(id, url)
+                );";
             s = cmd.ExecuteNonQuery();
         }
 
@@ -156,16 +90,7 @@ namespace FlightControlWeb.Models
             {
                 throw new Exception();
             }
-
-            //string stm = "SELECT * FROM ServerTable LIMIT 5";
-
-            //using var cmd1 = new SQLiteCommand(stm, connection);
-            //using SQLiteDataReader rdr = cmd1.ExecuteReader();
-
-            //while (rdr.Read())
-            //{
-            //    Console.WriteLine($"{rdr.GetString(0)} {rdr.GetString(1)}");
-            //}
+         
         }
 
 
@@ -187,24 +112,11 @@ namespace FlightControlWeb.Models
             {
                 AddSegmentOfFlight(f.Segments, id);
             }
-           
-            //string stm = "SELECT * FROM FlightPlanTable LIMIT 5";
-
-            //using var cmd1 = new SQLiteCommand(stm, connection);
-            //using SQLiteDataReader rdr = cmd1.ExecuteReader();
-
-            //while (rdr.Read())
-            //{
-            //    Console.WriteLine($"{rdr.GetString(0)} {rdr.GetString(1)} " +
-            //        $"{rdr.GetInt32(2)} {rdr.GetString(3)} "+
-            //        $"{rdr.GetDouble(4)} {rdr.GetDouble(5)}");
-            //}
-
-
         }
 
         private void AddSegmentOfFlight(List<Segment> segments, string id)
         {
+            //add segments of flight plan to DB
             foreach (Segment s in segments)
             {
                 using var cmd = new SQLiteCommand(connection);
@@ -220,21 +132,12 @@ namespace FlightControlWeb.Models
                 }
                 
             }
-
-            //string stm = "SELECT * FROM SegmentTable LIMIT 5";
-
-            //using var cmd1 = new SQLiteCommand(stm, connection);
-            //using SQLiteDataReader rdr = cmd1.ExecuteReader();
-            //while (rdr.Read())
-            //{
-            //    Console.WriteLine($"{rdr.GetString(0)} {rdr.GetDouble(1)} " +
-            //        $"{rdr.GetDouble(2)} {rdr.GetInt32(3)} ");
-            //}
         }
 
 
         public List<ServerFlight> GetServers()
         {
+            //get all server fron DB
             List<ServerFlight> serverFlights = new List<ServerFlight>();
             string stm = "SELECT * FROM ServerTable";
 
@@ -249,9 +152,9 @@ namespace FlightControlWeb.Models
             return serverFlights;
         }
 
-        //
         public List<FlightPlanId> GetFlightPlans()
         {
+            //get all flight plan from DB
             List<FlightPlanId> flights = new List<FlightPlanId>();
             string stm = "SELECT * FROM FlightPlanTable";
 
@@ -272,6 +175,7 @@ namespace FlightControlWeb.Models
         //throw exception if not found
         public FlightPlan GetFlightPlanById(string id)
         {
+            //get flight plan from DB by specific id
             FlightPlan f = null;
             string stm = "SELECT * FROM FlightPlanTable WHERE id=\'" + id + "\'";
 
@@ -291,6 +195,7 @@ namespace FlightControlWeb.Models
 
         public ServerFlight GetServerById(string id)
         {
+            //get server from DB by specific id
             ServerFlight f = null;
             string stm = "SELECT * FROM ServerTable WHERE id=\'" + id + "\'";
 
@@ -305,6 +210,7 @@ namespace FlightControlWeb.Models
 
         private List<Segment> GetSegmentById(string id)
         {
+            //get segments from DB by specific id
             List<Segment> segments = new List<Segment>();
 
             string stm = "SELECT * FROM SegmentTable WHERE id=\'"+id+"\'";
@@ -323,6 +229,7 @@ namespace FlightControlWeb.Models
 
         public void RemoveFlightPlan(string id)
         {
+            //remove flight plan from DB by specific id
             string stm = "DELETE FROM FlightPlanTable WHERE id=\'" + id+"\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
@@ -339,6 +246,7 @@ namespace FlightControlWeb.Models
 
         private void RemoveSegments(string id)
         {
+            //remove segments from DB by specific id
             string stm = "DELETE FROM SegmentTable WHERE id=\'" + id+"\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
@@ -352,6 +260,7 @@ namespace FlightControlWeb.Models
 
         public void RemoveServer(string id)
         {
+            //remove server from DB by specific id
             string stm = "DELETE FROM ServerTable WHERE id=\'" + id + "\'";
 
             using var cmd1 = new SQLiteCommand(stm, connection);
@@ -370,7 +279,7 @@ namespace FlightControlWeb.Models
 
         }
 
-        public static void fun2()
+        public static void Fun2()
         {
             string cs = "Data Source=:memory:";
             string stm = "SELECT SQLITE_VERSION()";

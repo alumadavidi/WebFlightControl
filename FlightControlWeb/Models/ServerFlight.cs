@@ -1,44 +1,18 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
     public class ServerFlight
     {
-        private string serverId;
-        private string serverUrl;
         public ServerFlight(string id, string url)
         {
-            serverId = id;
-            serverUrl = url;
+            ServerId = id;
+            ServerUrl = url;
         }
         [JsonProperty("ServerId")]
-        public string ServerId
-        {
-            set
-            {
-                serverId = value;
-            }
-            get
-            {
-                return serverId;
-            }
-        }
+        public string ServerId { set; get; }
         [JsonProperty("ServerUrl")]
-        public string ServerUrl
-        {
-            set
-            {
-                serverUrl = value;
-            }
-            get
-            {
-                return serverUrl;
-            }
-        }
+        public string ServerUrl { set; get; }
 
     }
 }

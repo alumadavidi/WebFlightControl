@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace FlightControlWeb.Models
 {
@@ -31,6 +28,7 @@ namespace FlightControlWeb.Models
 
         public static bool ValidStringDate(string date)
         {
+            //check validation of string date
             try
             {
                 CreateDateTimeFromString(date);
@@ -44,7 +42,7 @@ namespace FlightControlWeb.Models
 
         public static string ConvertDate(DateTime dateTime)
         {
-           
+            //cobvert DateTime to string
             return "" + dateTime.Year + "-" + dateTime.Month + "-" + dateTime.Day
                 + "T" + dateTime.Hour + ":" + dateTime.Minute + ":" + dateTime.Minute
                 + ":" + dateTime.Second + "Z";
