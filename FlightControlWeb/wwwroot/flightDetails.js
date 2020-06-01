@@ -1,4 +1,4 @@
-﻿function showFlightDetails(flightId) {
+﻿function showFlightDetails(flightId, marker) {
     document.getElementById("details").style.visibility = "visible";
     $.ajax({
         type: "GET",
@@ -6,16 +6,17 @@
         dataType: 'json',
         data: {
         }, success: function (flightPlan) {
-            segments = flightPlan.segments
-            let init = flightPlan.initial_location;
-            drowSegLines(init, segments);
-            let lastSegment = segments[segments.length - 1];
-            let endTime = getEndTime(segments, init.date_time);
-            $("#details").append("<tr><td>" + flightPlan.company_name + "</td>" + "<td>" +
-                flightPlan.passengers + "</td>" + "<td>(" + init.latitude + "," +
-                init.longitude + ")</td>" + "<td>(" + lastSegment.latitude + "," +
-                lastSegment.longitude + ")</td>" + "<td>" + init.date_time + "</td>" + "<td>" + endTime + "</td></tr>");
-
+            if (getClickedMarker() == marker) {
+                segments = flightPlan.segments
+                let init = flightPlan.initial_location;
+                drowSegLines(init, segments);
+                let lastSegment = segments[segments.length - 1];
+                let endTime = getEndTime(segments, init.date_time);
+                $("#details").append("<tr><td>" + flightPlan.company_name + "</td>" + "<td>" +
+                    flightPlan.passengers + "</td>" + "<td>(" + init.latitude + "," +
+                    init.longitude + ")</td>" + "<td>(" + lastSegment.latitude + "," +
+                    lastSegment.longitude + ")</td>" + "<td>" + init.date_time + "</td>" + "<td>" + endTime + "</td></tr>");
+            }
         }
     });
 }
@@ -23,7 +24,10 @@
 function cleanAndHideDataTable() {
     let detaildTable = document.getElementById("details");
     detaildTable.style.visibility = "hidden";
-    detaildTable.deleteRow(1);
+    var rowCount = $('#details >tbody >tr').length;
+    if (rowCount > 0) {
+        detaildTable.deleteRow(1);
+    }
 }
 
 function getEndTime(segments, initTime) {

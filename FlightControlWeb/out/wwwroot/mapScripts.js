@@ -45,7 +45,7 @@ function addIconToMap(latitude, longitude, flightId) {
             this.setIcon(clickedPlain);
             clickedMarker = this;
             highlightElements(flightId);
-            showFlightDetails(flightId);
+            showFlightDetails(flightId, this);
 
         }
         else if (clickedMarker != marker) {
@@ -53,15 +53,13 @@ function addIconToMap(latitude, longitude, flightId) {
             this.setIcon(clickedPlain);
             clickedMarker = this;
             highlightElements(flightId);
-            showFlightDetails(flightId);
-
+            showFlightDetails(flightId, this);
         } else {
             this.setIcon(plain);
             clickedMarker = "undefined";
             unHighlightElements(flightId);
             map.removeLayer(polyline);
             cleanAndHideDataTable();
-            
         }
     });
     markersMap[flightId] = marker;
@@ -96,4 +94,8 @@ function drowSegLines(init, segments) {
         polylinePoints.push([segnent.latitude, segnent.longitude]);
     });
     polyline = L.polyline(polylinePoints, { color: 'red' }).addTo(map);
+}
+
+function getClickedMarker() {
+    return clickedMarker;
 }

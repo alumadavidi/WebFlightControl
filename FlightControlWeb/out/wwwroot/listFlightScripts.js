@@ -78,12 +78,12 @@ function delFlight(event, flight) {
         success: function (data) {
             delFlightFromView(flight.id);
             event.cancelBubble = true;
-        }, 
+        },
         complete: function (xhr) {
             if (xhr.status == 404) {
                 sendAlert("Oops..this flight don't exist, can't be deleted");
             }
-        } 
+        }
     });
 }
 function delFlightFromView(flightId) {
