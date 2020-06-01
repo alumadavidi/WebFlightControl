@@ -20,7 +20,9 @@ namespace FlightControlWeb.Models
         public bool IsNull()
         {
             //check validation
-           if(Longitude == null || Latitude == null || DateTime == null)
+           if(DateTime == null || Longitude > 180
+                    || Longitude < -180 || Latitude > 90 || Latitude < -90 ||
+                    !TimeFunc.ValidStringDate(DateTime))
             {
                 return true;
             }

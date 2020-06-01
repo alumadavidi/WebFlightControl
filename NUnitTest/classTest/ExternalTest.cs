@@ -21,7 +21,7 @@ namespace UnitTestFlightWeb.classTest
         public async Task<FlightPlan> GetExternalFlightPlanAsync(string id)
         {
             FlightPlan f = data.GetFlightPlanById(id);
-            return f;
+            return await Task.FromResult(f);
         }
 
         public void RemoveServerFromDic(string id)

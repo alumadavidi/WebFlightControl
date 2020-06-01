@@ -28,6 +28,7 @@ namespace FlightControlWeb.Controllers
             string query = Request.QueryString.Value;
             if (query.Contains("sync_all"))
             {
+                relative_to = relative_to.Split("&")[0];
                 //get all filght - both form inner server and external server
                 flights = await flightManager.GetAllFlights(relative_to);
             }

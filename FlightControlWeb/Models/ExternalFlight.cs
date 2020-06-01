@@ -92,7 +92,7 @@ namespace FlightControlWeb.Models
                     flightplanServer.Add(f.Flight_Id, serverId);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception();
             }
@@ -138,7 +138,7 @@ namespace FlightControlWeb.Models
                     flightplanServer.Remove(item.Key);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 throw new Exception();
             }

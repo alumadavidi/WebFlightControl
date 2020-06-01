@@ -12,7 +12,7 @@ namespace TestFlightManager
  
     public class FlightManagerTest
     {
-        private int calls;
+
 
         [SetUp]
         public void Setup()
@@ -26,7 +26,7 @@ namespace TestFlightManager
 
             //arrange
             string id = "id";
-            FlightPlan exceptedFlightPlan = await GetOriginalFlightPlan();
+            FlightPlan exceptedFlightPlan =  GetOriginalFlightPlan();
             //stubs
             ExternalDb stubExData = new ExternalDb();
             InnerDb inner = new InnerDb();
@@ -52,7 +52,7 @@ namespace TestFlightManager
             Assert.Pass();
         }
 
-        private async Task<FlightPlan> GetOriginalFlightPlan()
+        private  FlightPlan GetOriginalFlightPlan()
         {
             List<Segment> s = new List<Segment>()
             {
@@ -75,7 +75,7 @@ namespace TestFlightManager
             new InitialLocation(33.244, 31.12, "2020-05-11T12:40:21Z"),
             s);
 
-            return f;
+            return await Task.FromResult(f);
         }
     }
 }
