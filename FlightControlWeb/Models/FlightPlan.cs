@@ -26,9 +26,9 @@ namespace FlightControlWeb.Models
         public bool IsNull()
         {
             //check validation
-            if (Passengers == null || CompanyName == null 
+            if (CompanyName == null
                 || InitialLocation == null || InitialLocation.IsNull() 
-                || Segments == null || SegmentNull(Segments) || Passengers <0)
+                || Segments == null || SegmentNull(Segments) || Passengers < 0)
             {
                 return true;
             }
@@ -40,7 +40,8 @@ namespace FlightControlWeb.Models
             //check segment validation
             foreach(Segment s in segments)
             {
-                if(s == null || s.IsNull())
+                if(s == null || s.IsNull() || s.Longitude >180
+                    || s.Longitude < -180 || s.Latitude > 90 || s.Latitude < -90)
                 {
                     return true;
                 }

@@ -20,7 +20,7 @@ function dropInTarget(event) {
     xhr.setRequestHeader("Content-Type", "application/json"); 
     xhr.send(file);
     xhr.onload = function () {
-        if (xhr.status == 400) {
+        if (xhr.status == 400 || xhr.status == 500) {
             sendAlert("something wrong with the file, check it");
 
         }

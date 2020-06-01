@@ -20,7 +20,7 @@ namespace FlightControlWeb.Models
         public bool IsNull()
         {
             //check validation
-            if(Longitude == null || Latitude == null || TimespanSeconds == null)
+            if(TimespanSeconds <= 0)
             {
                 return true;
             }
