@@ -81,7 +81,7 @@ function delFlight(event, flight) {
         }, 
         error: function () {
             sendAlert("Oops..this flight don't exist, can't be deleted");
-        } 
+        }
     });
 }
 function delFlightFromView(flightId) {
