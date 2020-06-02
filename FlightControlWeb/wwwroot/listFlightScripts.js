@@ -2,13 +2,14 @@
 let flightListInTable = [];
 //the function get data from server and update the table
 function updateTable() {
-    let currentdate = new Date();
-    let curDate = currentdate.getFullYear() + "-"
-        + (currentdate.getMonth() + 1) + "-"
-        + currentdate.getDate() + "T"
-        + currentdate.getHours() + ":"
-        + currentdate.getMinutes() + ":"
-        + currentdate.getSeconds() + "Z";
+    let currentdate = new Date().toISOString().slice(0, -5) + 'Z';
+    //currentdate = currentdate.replace(/T/g, " ");
+    //let curDate = currentdate.getFullYear() + "-"
+    //    + (currentdate.getMonth() + 1) + "-"
+    //    + currentdate.getDate() + "T"
+    //    + currentdate.getHours() + ":"
+    //    + currentdate.getMinutes() + ":"
+    //    + currentdate.getSeconds() + "Z";
     //List of flights from server
     let flightsFromServer = [];
     let flightsUrl = "api/Flights";
@@ -17,7 +18,7 @@ function updateTable() {
         url: flightsUrl,
         dataType: 'json',
         data: {
-            relative_to: curDate + "&sync_all"
+            relative_to: currentdate + "&sync_all"
         }, success: function (flights) {
             flights.forEach(function (flight) {
                 //add flight to list from server
