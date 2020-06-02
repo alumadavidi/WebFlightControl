@@ -39,10 +39,10 @@ namespace FlightControlWeb.Controllers
             }
             if (flights.Count != 0)
             {
-                return Ok(flights);
+                return await Task.FromResult(Ok(flights));
             } else
             {
-                return new List<Flight>();
+                return await Task.FromResult(new List<Flight>());
             }
 
         }
@@ -51,16 +51,16 @@ namespace FlightControlWeb.Controllers
         // DELETE: api/Flights/5
         [HttpDelete("{id}")]
         [Consumes("application/json")]
-        public ActionResult Delete(string id)
+        public async Task<ActionResult> Delete(string id)
         {
             try
             {
                 //delete flight plan
                 flightManager.DeleteFlight(id);
-                return Ok();
+                return await Task.FromResult(Ok());
             } catch
             {
-                return NotFound(id);
+                return await Task.FromResult(NotFound(id));
             }
         }
     }

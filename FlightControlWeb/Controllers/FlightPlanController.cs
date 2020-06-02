@@ -24,29 +24,29 @@ namespace FlightControlWeb.Controllers
             FlightPlan f = await flightPlanManager.GetFlightPlanById(id);
             if (f != null)
             {
-                return Ok(f);
+                return await Task.FromResult(Ok(f));
             } else
             {
                 //the id not found
-                return NotFound(id);
+                return await Task.FromResult(NotFound(id));
             }
         }
 
         // POST: api/FlightPlan
         [HttpPost]
         [Consumes("application/json")]
-        public ActionResult AddFlightPlan(FlightPlan f)
+        public async Task<ActionResult> AddFlightPlan(FlightPlan f)
         {
             try
             {
                 //add new flight plan to DB
                 flightPlanManager.AddNewFlightPlan(f);
-                return Created("create new FlightPlan", f);
+                return await Task.FromResult(Created("create new FlightPlan", f));
             } 
             catch
             {
                 //InternalServerErrorResult
-                return StatusCode(500);
+                return await Task.FromResult(StatusCode(500));
             }
         }
     }
