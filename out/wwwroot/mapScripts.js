@@ -1,11 +1,11 @@
-﻿
-// center of the map
+﻿// center of the map
 let center = [51.505, -0.09];
 
 // Create the map
 let map = L.map('map').setView(center, 3);
 
-map.on('click', function (e) {
+//if there is a clicked flight cancle it when map clicked
+map.on('click', function () {
     if (clickedMarker != "undefined") {
         clickedMarker.fire('click');
         clickedMarker = "undefined";
@@ -18,43 +18,45 @@ L.tileLayer(
     maxZoom: 18
 }).addTo(map);
 
-let clickedPlain = L.icon({
-    iconUrl: 'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Ball-Azure.png',
-    iconSize: [25, 25], // size of the icon
-});
+//set icon to plane
 let plain = L.icon({
     iconUrl: 'https://image.flaticon.com/icons/png/512/9/9890.png',
     iconSize: [25, 25], // size of the icon
 });
+
+//set icon to clicked plane
+let clickedPlane = L.icon({
+    iconUrl: 'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Ball-Azure.png',
+    iconSize: [40, 40], // size of the icon
+});
+
+//Map for all markers in map by id of flight
 let markersMap = {}
+//var to hold the clicked marker (if undefined - no clicked marker)
 let clickedMarker = "undefined";
+//lines of segment for flight plan
 let polyline;
-function clearMap() {
-    console.log("KK");
-    map.eachLayer(function (layer) {
-        if (layer instanceof L.Marker) {
-            map.removeLayer(layer);
-        }
-    });
-}
-
-
+// add icon of flight to map
 function addIconToMap(latitude, longitude, flightId) {
-    let marker = L.marker([latitude, longitude], { icon: plain }).addTo(map).on('click', function (e) {
+    let marker = L.marker([latitude, longitude], { icon: plain }).addTo(map).on('click', function () {
+        //if there is no clicked marker
         if (clickedMarker == "undefined") {
-            this.setIcon(clickedPlain);
+            this.setIcon(clickedPlane);
             clickedMarker = this;
             highlightElements(flightId);
             showFlightDetails(flightId, this);
-
         }
+        //there is clicked other marker
         else if (clickedMarker != marker) {
             clickedMarker.fire('click');
-            this.setIcon(clickedPlain);
+            this.setIcon(clickedPlane);
             clickedMarker = this;
             highlightElements(flightId);
             showFlightDetails(flightId, this);
-        } else {
+        }
+        //this marker is clicked
+        else
+        {
             this.setIcon(plain);
             clickedMarker = "undefined";
             unHighlightElements(flightId);
@@ -62,31 +64,32 @@ function addIconToMap(latitude, longitude, flightId) {
             cleanAndHideDataTable();
         }
     });
+    //add marker to map as value and id flight as key
     markersMap[flightId] = marker;
 }
-
+//delete marker from map
 function deleteMarker(flightId) {
-    let marker = markersMap[flightId]
+    let marker = markersMap[flightId];
+    //if it's clicked unclick it and then delete
     if (clickedMarker == marker) {
         marker.fire('click');
     } 
     map.removeLayer(marker);
-
 }
-
+//when click on row do the same as click on it's marker
 function rowClick(event, flight) {
     let id = event.target.id;
+    //if the click is on delete buton don't click
     if (id != "trash" && id != "delButton") {
         markersMap[flight.id].fire('click');
     }
 }
-
-
+//move the marker to the cur latlng
 function updateMrkerLatlng(latitude, longitude, flightId){
     let marker = markersMap[flightId];
     marker.setLatLng([latitude, longitude]);
 }
-//initial
+//Drow segments lines on map
 function drowSegLines(init, segments) {
     let polylinePoints = []
     polylinePoints.push([init.latitude, init.longitude]);
@@ -95,7 +98,7 @@ function drowSegLines(init, segments) {
     });
     polyline = L.polyline(polylinePoints, { color: 'red' }).addTo(map);
 }
-
+//get the clicked marker
 function getClickedMarker() {
     return clickedMarker;
 }

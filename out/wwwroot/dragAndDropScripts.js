@@ -1,4 +1,5 @@
-﻿function allowDrop(event) {
+﻿//when user drag a file over the drag and drop area
+function allowDrop(event) {
     event.preventDefault();
     let img = document.getElementById("draganddropimage");
     if (window.getComputedStyle(img).visibility === "hidden") {
@@ -8,6 +9,7 @@
     $("#draganddropimage").show();
 }
 
+//when the user drop the file into the drag and drop area
 function dropInTarget(event) {
     event.preventDefault();
     $("#draganddropimage").hide();
@@ -26,6 +28,7 @@ function dropInTarget(event) {
         }
     };
 }
+//when the user drop the file not in the drag and drop area
 function drop(event) {
     event.preventDefault();
     $("#draganddropimage").hide();
