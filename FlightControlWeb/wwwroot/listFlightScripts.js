@@ -75,7 +75,7 @@ function delFlight(event, flight) {
         type: "DELETE",
         url: "api/Flights/" + flight.id,
         dataType: 'json',
-        success: function (data) {
+        success: function () {
             delFlightFromView(flight.id);
             event.cancelBubble = true;
         },

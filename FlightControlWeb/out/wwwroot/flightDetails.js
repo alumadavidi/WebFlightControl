@@ -7,7 +7,7 @@
         data: {
         }, success: function (flightPlan) {
             if (getClickedMarker() == marker) {
-                segments = flightPlan.segments
+                let segments = flightPlan.segments
                 let init = flightPlan.initial_location;
                 drowSegLines(init, segments);
                 let lastSegment = segments[segments.length - 1];
