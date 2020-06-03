@@ -51,9 +51,6 @@
     <Content Update="wwwroot\bootstrap\js\popper.min.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Update="wwwroot\clicked plain.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Update="wwwroot\draganddrop.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

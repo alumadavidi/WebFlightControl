@@ -11,5 +11,7 @@ function sendAlert(message) {
 function checkFileValidness(file) {
     if (file.type != "application/json") {
         sendAlert("Oops..the file is not valid, try to drag a json file");
+        return false;
     }
+    return true;
 }

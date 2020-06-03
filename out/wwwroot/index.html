@@ -1,0 +1,155 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>flight</title>
+    <meta charset="utf-8">
+
+    <link href="bootstrap/css/global.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+
+    <style>
+        .container-fluid {
+            background-color: cadetblue;
+            width: 100%;
+            height: 100%;
+            background-image:url('https://get.wallhere.com/photo/night-space-sky-nebula-atmosphere-astronomy-Aurora-light-point-background-star-computer-wallpaper-outer-space-astronomical-object-609089.jpg');
+        }
+        .TableTitle{
+            text-align: center;
+            color: lightgray;
+
+        }
+        #alert-message {
+            position: fixed;
+            top: 5px;
+            left: 10%;
+            width: 80%;
+            text-align: center;
+            border: 1px solid;
+            box-shadow: 3px;
+            display: none;
+        }
+        #map {
+            height: 500px;
+            width: 100%;
+            margin-top: 70px;
+            margin-left: 5px;
+        }
+
+        #details {
+            visibility: hidden;
+            color: white;
+        }
+        #details-wrapper {
+            margin-left: 5px;
+            width: 100%;
+            height: 200px;
+        }
+        #draganddropimage {
+            visibility: hidden;
+            width: 100%;
+            height: 100%;
+        }
+        #flightlist {
+            margin-top: 70px;
+        }
+
+        #droptarget {
+            float: left;
+            width:100%;
+        }
+
+
+        #scrollTable {
+            overflow-y: scroll;
+            height: 280px;
+            width: 400px;
+            display: block;
+            background-color: lightgray;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 8px;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <div class="col-md-8" ondrop="drop(event)" ondragover="drop(event)">
+                <div class="row" id="map"></div>
+                <div class="row" id="details-wrapper">
+                    <table class="table" id="details">
+                        <thead>
+                            <tr>
+                                <th>company name</th>
+                                <th>passengers</th>
+                                <th>start point</th>
+                                <th>end point</th>
+                                <th>start time</th>
+                                <th>end time</th>
+                            </tr>
+                        </thead>
+                        <tbody></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="droptarget col-md-4" id="droptarget" ondrop="dropInTarget(event)" ondragover="allowDrop(event)">
+                <div class="container" id="flightlist">
+                    <h3 class="TableTitle">My flights</h3>
+                    <div class="container" id="scrollTable">
+                        <table class="table table-striped table-sm" id="myflightstbl">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>company name</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                    <h3 class="TableTitle">External flights</h3>
+                    <div class="container" id="scrollTable">
+                        <table class="table table-striped table-sm" id="exflightstbl">
+                            <thead>
+                                <tr>
+                                    <th>id</th>
+                                    <th>company name</th>
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                    </div>
+                </div>
+                <img src="draganddrop.png" id="draganddropimage" />
+
+            </div>
+        </div>
+    </div>
+    <div class="alert alert-warning" id="alert-message">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+
+    </div>
+    <script src="flightDetails.js"></script>
+    <script src="mapScripts.js"></script>
+    <script src="listFlightScripts.js"></script>
+    <script src="dragAndDropScripts.js"></script>
+    <script src="warning.js"></script>
+
+</body>
+</html>
